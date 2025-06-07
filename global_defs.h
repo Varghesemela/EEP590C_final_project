@@ -20,6 +20,20 @@ extern const int TRIG_PIN;
 extern const int SS_PIN;
 extern const int RST_PIN;
 
+
+//========= TASK HANDLES =========
+extern TaskHandle_t TaskLED_Handle;
+extern TaskHandle_t TaskServoRun_Handle;
+extern TaskHandle_t TaskMotion_Handle;
+extern TaskHandle_t TaskSound_Handle;
+extern TaskHandle_t TaskLCD_Handle;
+extern TaskHandle_t TaskUltraSonic_Handle;
+extern TaskHandle_t taskRFIDReader_Handle;
+extern TaskHandle_t taskPrinter_Handle;
+
+extern const char* allowedUIDs[];
+extern const int numAllowedUIDs;
+
 // ========== Constants ==========
 extern const float SOUND_SPEED_CM_PER_US;
 extern const unsigned long debounceDelay;

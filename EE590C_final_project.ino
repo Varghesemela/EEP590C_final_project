@@ -24,21 +24,6 @@
 #include "core0.h"
 #include "core1.h"
 
-// //========= LCD SETUP =========
-// /**
-//  * @brief 16x2 I2C LCD at address 0x27
-//  */
-
-//========= TASK HANDLES =========
-TaskHandle_t TaskLED_Handle = NULL;
-TaskHandle_t TaskServoRun_Handle = NULL;
-TaskHandle_t TaskMotion_Handle = NULL;
-TaskHandle_t TaskSound_Handle = NULL;
-TaskHandle_t TaskLCD_Handle = NULL;
-TaskHandle_t TaskUltraSonic_Handle = NULL;
-TaskHandle_t taskRFIDReader_Handle = NULL;
-TaskHandle_t taskPrinter_Handle = NULL;
-
 //========= GLOBAL VARIABLES =========
 // static SemaphoreHandle_t semaphore;  ///< Semaphore for data synchronization
 
@@ -59,7 +44,7 @@ void setup() {
   pinMode(ECHO_PIN, INPUT);
 
   Wire.begin(SDA_PIN, SCL_PIN);
-  lcd.begin(20, 21);
+  lcd.begin(8, 9);
   lcd.backlight();
   lcd.clear();
   lcd.setCursor(0, 0);
@@ -77,6 +62,14 @@ void setup() {
   myservo.attach(SERVO_PIN, 500, 2400);
   myservo.write(0);
   delay(50);
+
+  esp_timer_create_args_t timer_args = {
+    .callback = &onLockTimer,
+    .arg = NULL,
+    .dispatch_method = ESP_TIMER_TASK,
+    .name = "lockTimer"
+  };
+  esp_timer_create(&timer_args, &lockTimer);
 
   // Init RFID module
   SPI.begin();

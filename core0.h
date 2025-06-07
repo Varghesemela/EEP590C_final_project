@@ -12,6 +12,7 @@
 #include <ESP32Servo.h>
 #include <LCD_I2C.h>
 
+#include "esp_timer.h"
 
 // I²C LCD (same wiring as Part 1: SDA=21, SCL=22)
 #define LCD_ADDR       0x27
@@ -28,6 +29,9 @@
 #define LCD_CMD_CR    0x80
 #define LCD_CMD_CLS   0x01
 
+extern portMUX_TYPE timerMux;
+extern esp_timer_handle_t lockTimer;
+
 // Task function prototypes
 void ServoRunTask(void* arg);
 void motionTask(void* pvParameters);
@@ -35,5 +39,6 @@ void LCDTask(void* arg);
 // Function prototypes
 void taskRFIDReader(void *pvParameters);
 void taskPrinter(void *pvParameters);
+void IRAM_ATTR onLockTimer(void* arg);
 
 #endif
