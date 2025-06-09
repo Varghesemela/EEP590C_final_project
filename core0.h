@@ -11,6 +11,7 @@
 #include <string>
 #include <ESP32Servo.h>
 #include <LiquidCrystal_I2C.h>
+#include "driver/timer.h"
 
 #include "esp_timer.h"
 
@@ -30,7 +31,6 @@
 #define LCD_CMD_CLS   0x01
 
 extern portMUX_TYPE timerMux;
-extern esp_timer_handle_t lockTimer;
 
 // Task function prototypes
 void ServoRunTask(void* arg);
@@ -39,6 +39,8 @@ void LCDTask(void* arg);
 // Function prototypes
 void taskRFIDReader(void *pvParameters);
 void taskPrinter(void *pvParameters);
+
 void IRAM_ATTR onLockTimer(void* arg);
+void IRAM_ATTR onBacklightTimer(void* arg);
 
 #endif
