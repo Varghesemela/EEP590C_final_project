@@ -58,6 +58,10 @@ extern volatile int bufferIndex;
 extern volatile int bufferIndex_sound;
 extern volatile int bufferIndex_dist;
 
+extern bool backlightOn;
+extern esp_timer_handle_t backlightTimer;
+extern esp_timer_handle_t lockTimer;
+
 // ========== Button State ==========
 extern bool lastButtonReading;
 extern bool buttonState;

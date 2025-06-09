@@ -57,9 +57,20 @@ void distanceTask(void* pvParameters) {
 
     if (sum < 100) {
       close_dist = true;
+
+      // Reset inactivity timer
+      if (!backlightOn) {
+        backlightOn = true;
+        Serial.println("Backlight ON (proximity)");
+      }
+
+      // timerStop(backlightTimer);
+      // timerWrite(backlightTimer, 0);
+      // timerStart(backlightTimer);
     } else {
       close_dist = false;
     }
+    
     // Serial.println("]");
 
     vTaskDelay(pdMS_TO_TICKS(200));

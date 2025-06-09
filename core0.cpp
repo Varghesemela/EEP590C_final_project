@@ -19,11 +19,10 @@
 #include <Wire.h>
 #include <ESP32Servo.h>
 #include <LCD_I2C.h>
-
+#include "driver/timer.h"
 #include "global_defs.h"
 
 portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
-esp_timer_handle_t lockTimer;
 
 //========= TASK FUNCTION DECLARATIONS =========
 void ServoRunTask(void* arg);
@@ -34,6 +33,12 @@ void IRAM_ATTR onLockTimer(void* arg) {
   portENTER_CRITICAL_ISR(&timerMux);
   isLock = true;
   xTaskNotifyGive(TaskServoRun_Handle);
+  portEXIT_CRITICAL_ISR(&timerMux);
+}
+
+void IRAM_ATTR onBacklightTimer(void* arg) {
+  portENTER_CRITICAL_ISR(&timerMux);
+  backlightOn = false;
   portEXIT_CRITICAL_ISR(&timerMux);
 }
 
@@ -118,16 +123,26 @@ void taskPrinter(void *pvParameters) {
           isLock = false;
           xTaskNotifyGive(TaskServoRun_Handle);
           // Reset timer when RFID grants access
-          esp_timer_stop(lockTimer); // In case it's running
-          esp_timer_start_once(lockTimer, 10 * 1000000); // 10 seconds in microseconds
+          esp_timer_stop(lockTimer);
+          esp_timer_start_once(lockTimer, 10000000);  // 10 sec = 10,000,000 us
+
+          // Reset inactivity timer
+          if (!backlightOn) {
+            backlightOn = true;
+            Serial.println("Backlight ON (RFID update)");
+            esp_timer_stop(backlightTimer);
+            esp_timer_start_once(backlightTimer, 10000000);  // 10 sec = 10,000,000 us
+
+          }
           strncpy(lastUID, receivedUID, sizeof(lastUID));
         } else {
           if(isLock){
             isLock = false;
             xTaskNotifyGive(TaskServoRun_Handle);
             // Reset timer when RFID grants access
-            esp_timer_stop(lockTimer); // In case it's running
-            esp_timer_start_once(lockTimer, 10 * 1000000); // 10 seconds in microseconds
+            esp_timer_stop(lockTimer);
+            esp_timer_start_once(lockTimer, 10000000);  // 10 sec = 10,000,000 us
+            
             strncpy(lastUID, receivedUID, sizeof(lastUID));
           } else {
             Serial.println("Same tag re-scanned, and already unlocked. Ignoring...");
@@ -196,6 +211,13 @@ void LCDTask(void* arg) {
     lcd.print("        ");
     lcd.setCursor(8, 1);
     lcd.print(isLock ? "Locked" : "Unlocked");
+
+    // Backlight control
+    if (backlightOn) {
+      lcd.backlight();
+    } else {
+      lcd.noBacklight();
+    }
 
     vTaskDelay(pdMS_TO_TICKS(200));
   }

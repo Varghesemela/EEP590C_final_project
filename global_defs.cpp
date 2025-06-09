@@ -60,6 +60,10 @@ volatile int bufferIndex = 0;
 volatile int bufferIndex_sound = 0;
 volatile int bufferIndex_dist = 0;
 
+bool backlightOn = false;
+esp_timer_handle_t backlightTimer;
+esp_timer_handle_t lockTimer;
+
 // ========== Button State ==========
 bool lastButtonReading = HIGH;
 bool buttonState = HIGH;

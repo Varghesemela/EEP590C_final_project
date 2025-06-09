@@ -20,6 +20,7 @@
 #include <Wire.h>
 #include <ESP32Servo.h>
 #include <LCD_I2C.h>
+#include "driver/timer.h" 
 #include "global_defs.h"
 #include "core0.h"
 #include "core1.h"
@@ -56,8 +57,7 @@ void setup() {
 
   ESP32PWM::allocateTimer(0);
   ESP32PWM::allocateTimer(1);
-  ESP32PWM::allocateTimer(2);
-  ESP32PWM::allocateTimer(3);
+  
   myservo.setPeriodHertz(50);
   myservo.attach(SERVO_PIN, 500, 2400);
   myservo.write(0);
@@ -70,6 +70,14 @@ void setup() {
     .name = "lockTimer"
   };
   esp_timer_create(&timer_args, &lockTimer);
+
+  esp_timer_create_args_t backlight_timer_args = {
+    .callback = &onBacklightTimer,
+    .arg = NULL,
+    .dispatch_method = ESP_TIMER_TASK,
+    .name = "backlightTimer"
+  };
+  esp_timer_create(&backlight_timer_args, &backlightTimer);
 
   // Init RFID module
   SPI.begin();
@@ -90,7 +98,7 @@ void setup() {
   xTaskCreatePinnedToCore(LCDTask, "LCDTask", 2048, NULL, 1, &TaskLCD_Handle, 0);
   xTaskCreatePinnedToCore(motionTask, "MotionTask", 2048, NULL, 1, &TaskMotion_Handle, 0);
 
-  xTaskCreatePinnedToCore(distanceTask, "UltraSonicTask", 2048, nullptr, 1, &TaskUltraSonic_Handle, 1);
+  // xTaskCreatePinnedToCore(distanceTask, "UltraSonicTask", 2048, nullptr, 1, &TaskUltraSonic_Handle, 1);
 }
 
 
