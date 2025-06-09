@@ -20,7 +20,7 @@
 #include <Wire.h>
 #include <ESP32Servo.h>
 #include <LiquidCrystal_I2C.h>
-#include "driver/timer.h" 
+#include "driver/timer.h"
 #include "global_defs.h"
 #include "core0.h"
 #include "core1.h"
@@ -43,7 +43,7 @@ void setup() {
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
 
-  // init I2C port 
+  // init I2C port
   Wire.begin(SDA_PIN, SCL_PIN);
 
   // init LCD
@@ -61,7 +61,7 @@ void setup() {
   // init servo
   ESP32PWM::allocateTimer(0);
   ESP32PWM::allocateTimer(1);
-  
+
   myservo.setPeriodHertz(50);
   myservo.attach(SERVO_PIN, 500, 2400);
   myservo.write(0);
@@ -71,7 +71,7 @@ void setup() {
   rtc.begin();
   if (rtc.lostPower()) {
     Serial.println("RTC lost power, setting time!");
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); // Set from compile time
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));  // Set from compile time
   }
 
   //semaphores
@@ -94,27 +94,39 @@ void setup() {
   esp_timer_create(&backlight_timer_args, &backlightTimer);
 
   // Init RFID module
-  SPI.begin();
-  rfid.PCD_Init();
+  SPI.begin(SCK_PIN, MISO_PIN, MOSI_PIN, SS_PIN);
+  rfid.PCD_Init(SS_PIN, RST_PIN);
+  if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
+    DateTime now = rtc.now();
+    Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
+    xSemaphoreGive(i2c_semaphore);
+  } else {
+    Serial.println("RTC I2C timeout");
+  }
+
   Serial.println(F("FreeRTOS RFID System Starting..."));
 
   // Create a queue with room for 5 strings of 20 chars each
   rfidQueue = xQueueCreate(5, sizeof(char[20]));
   if (rfidQueue == NULL) {
     Serial.println("Error creating queue!");
-    while (1);
-  }
+    while (1)
+      ;
+  }                                                                                         
 
   //RFID
   xTaskCreatePinnedToCore(taskRFIDReader, "RFID Reader", 4096, NULL, 1, &taskRFIDReader_Handle, 0);
   xTaskCreatePinnedToCore(taskPrinter, "Printer", 2048, NULL, 1, &taskPrinter_Handle, 0);
 
+  //servo
   xTaskCreatePinnedToCore(ServoRunTask, "servoRun", 2048, NULL, 1, &TaskServoRun_Handle, 0);
+  
+  //LCD
   xTaskCreatePinnedToCore(LCDTask, "LCDTask", 2048, NULL, 1, &TaskLCD_Handle, 0);
   xTaskCreatePinnedToCore(motionTask, "MotionTask", 2048, NULL, 1, &TaskMotion_Handle, 0);
 
   xTaskCreatePinnedToCore(distanceTask, "UltraSonicTask", 2048, nullptr, 1, &TaskUltraSonic_Handle, 1);
-  xTaskCreatePinnedToCore(rtcTask, "RTC Task", 2048, NULL, 1, &taskRTC_Handle, 1);
+  // xTaskCreatePinnedToCore(rtcTask, "RTC Task", 2048, NULL, 1, &taskRTC_Handle, 1);
 }
 
 

@@ -78,7 +78,7 @@ void ServoRunTask(void* arg) {
   }
 }
 
-void taskRFIDReader(void *pvParameters) {
+void taskRFIDReader(void* pvParameters) {
   while (1) {
     if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {
       char uidStr[20];
@@ -99,7 +99,7 @@ void taskRFIDReader(void *pvParameters) {
   }
 }
 
-void taskPrinter(void *pvParameters) {
+void taskPrinter(void* pvParameters) {
   char receivedUID[20];
   char lastUID[20] = "";
 
@@ -118,6 +118,13 @@ void taskPrinter(void *pvParameters) {
         // Avoid printing duplicates
         int sameIDscanned = strcmp(receivedUID, lastUID);
         if ((sameIDscanned != 0) && isLock) {
+          if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
+            DateTime now = rtc.now();
+            Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
+            xSemaphoreGive(i2c_semaphore);
+          } else {
+            Serial.println("RTC I2C timeout");
+          }
           Serial.print("Access Granted. UID: ");
           Serial.println(receivedUID);
           isLock = false;
@@ -132,17 +139,16 @@ void taskPrinter(void *pvParameters) {
             Serial.println("Backlight ON (RFID update)");
             esp_timer_stop(backlightTimer);
             esp_timer_start_once(backlightTimer, 10000000);  // 10 sec = 10,000,000 us
-
           }
           strncpy(lastUID, receivedUID, sizeof(lastUID));
         } else {
-          if(isLock){
+          if (isLock) {
             isLock = false;
             xTaskNotifyGive(TaskServoRun_Handle);
             // Reset timer when RFID grants access
             esp_timer_stop(lockTimer);
             esp_timer_start_once(lockTimer, 10000000);  // 10 sec = 10,000,000 us
-            
+
             strncpy(lastUID, receivedUID, sizeof(lastUID));
           } else {
             Serial.println("Same tag re-scanned, and already unlocked. Ignoring...");
@@ -150,6 +156,13 @@ void taskPrinter(void *pvParameters) {
         }
       } else {
         isLock = true;
+        if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
+          DateTime now = rtc.now();
+          Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
+          xSemaphoreGive(i2c_semaphore);
+        } else {
+          Serial.println("RTC I2C timeout");
+        }
         Serial.print("Access Denied. Unknown UID: ");
         Serial.println(receivedUID);
       }
@@ -190,6 +203,20 @@ void motionTask(void* pvParameters) {
 
     if (sum > 2) {
       motion = true;
+      if (!backlightOn) {
+        backlightOn = true;
+        if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
+          DateTime now = rtc.now();
+          Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
+          xSemaphoreGive(i2c_semaphore);
+        } else {
+          Serial.println("RTC I2C timeout");
+        }
+        Serial.println("Backlight ON (motion)");
+
+        esp_timer_stop(backlightTimer);
+        esp_timer_start_once(backlightTimer, 10000000);  // 10 sec = 10,000,000 us
+      }
     } else {
       motion = false;
     }
@@ -223,15 +250,14 @@ void LCDTask(void* arg) {
         lcd.print(line1);
         prevLine1 = line1;
       }
+      // Backlight control
+      if (backlightOn) {
+        lcd.backlight();
+      } else {
+        lcd.noBacklight();
+      }
 
       xSemaphoreGive(i2c_semaphore);
-    }
-
-    // Backlight control
-    if (backlightOn) {
-      lcd.backlight();
-    } else {
-      lcd.noBacklight();
     }
 
     vTaskDelay(pdMS_TO_TICKS(200));
