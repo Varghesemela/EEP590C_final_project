@@ -11,5 +11,6 @@
 // Task function prototypes
 
 void distanceTask(void* pvParameters);
+void rtcTask(void *args);
 
 #endif

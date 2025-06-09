@@ -10,7 +10,7 @@
 #include <stdint.h>
 #include <string>
 #include <ESP32Servo.h>
-#include <LCD_I2C.h>
+#include <LiquidCrystal_I2C.h>
 
 #include "esp_timer.h"
 

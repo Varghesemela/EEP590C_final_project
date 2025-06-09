@@ -19,7 +19,7 @@
 #include <freertos/task.h>
 #include <Wire.h>
 #include <ESP32Servo.h>
-#include <LCD_I2C.h>
+#include <LiquidCrystal_I2C.h>
 #include "global_defs.h"
 #include "core0.h"
 #include "core1.h"
@@ -38,12 +38,14 @@ void setup() {
 
   pinMode(PIR_PIN, INPUT);
   pinMode(LED, OUTPUT);
-  pinMode(POT_PIN, INPUT);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
 
+  // init I2C port 
   Wire.begin(SDA_PIN, SCL_PIN);
+
+  // init LCD
   lcd.begin(8, 9);
   lcd.backlight();
   lcd.clear();
@@ -52,8 +54,10 @@ void setup() {
   lcd.setCursor(0, 1);
   lcd.print("State: ");
 
+  //attach led as an ledc output
   ledcAttach(LED, 100, 12);
 
+  // init servo
   ESP32PWM::allocateTimer(0);
   ESP32PWM::allocateTimer(1);
   ESP32PWM::allocateTimer(2);
@@ -62,6 +66,16 @@ void setup() {
   myservo.attach(SERVO_PIN, 500, 2400);
   myservo.write(0);
   delay(50);
+
+  //init rtc
+  rtc.begin();
+  if (rtc.lostPower()) {
+    Serial.println("RTC lost power, setting time!");
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); // Set from compile time
+  }
+
+  //semaphores
+  i2c_semaphore = xSemaphoreCreateMutex();
 
   esp_timer_create_args_t timer_args = {
     .callback = &onLockTimer,
@@ -83,6 +97,7 @@ void setup() {
     while (1);
   }
 
+  //RFID
   xTaskCreatePinnedToCore(taskRFIDReader, "RFID Reader", 4096, NULL, 1, &taskRFIDReader_Handle, 0);
   xTaskCreatePinnedToCore(taskPrinter, "Printer", 2048, NULL, 1, &taskPrinter_Handle, 0);
 
@@ -91,6 +106,7 @@ void setup() {
   xTaskCreatePinnedToCore(motionTask, "MotionTask", 2048, NULL, 1, &TaskMotion_Handle, 0);
 
   xTaskCreatePinnedToCore(distanceTask, "UltraSonicTask", 2048, nullptr, 1, &TaskUltraSonic_Handle, 1);
+  xTaskCreatePinnedToCore(rtcTask, "RTC Task", 2048, NULL, 1, &taskRTC_Handle, 1);
 }
 
 

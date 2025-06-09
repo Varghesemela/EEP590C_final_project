@@ -18,7 +18,7 @@
 
 #include <Wire.h>
 #include <ESP32Servo.h>
-#include <LCD_I2C.h>
+#include <LiquidCrystal_I2C.h>
 
 #include "global_defs.h"
 
@@ -147,22 +147,21 @@ void motionTask(void* pvParameters) {
   vTaskDelay(pdMS_TO_TICKS(200));
 
   while (1) {
-    // 1) Read the digital output of HC-SR501:
-    //    HIGH (1) means motion detected; LOW (0) means no motion.
+    // HIGH (1) means motion detected; LOW (0) means no motion.
     int state = digitalRead(PIR_PIN);
 
-    // 2) Store it in the circular buffer:
+    // Store it in the circular buffer:
     motionBuffer[bufferIndex] = state;
     bufferIndex = (bufferIndex + 1) % 5;
 
-    // 3) Print the newest reading:
+    // Print the newest reading:
     // Serial.print("Newest state: ");
     // Serial.println(state == HIGH ? "MOTION" : "no motion");
     // Serial.print("   [Next write index = ");
     // Serial.print(bufferIndex);
     // Serial.println("]");
 
-    // 4) Print out the entire buffer (indices 0–4):
+    // Print out the entire buffer (indices 0–4):
     // Serial.print("Buffer contents: [");
     int sum = 0;
     for (int i = 0; i < 5; i++) {
@@ -186,17 +185,33 @@ void motionTask(void* pvParameters) {
 }
 
 void LCDTask(void* arg) {
+  TickType_t xLastWakeTime = xTaskGetTickCount();
+  String prevLine0 = "", prevLine1 = "";
+
   while (1) {
-    lcd.setCursor(8, 0);
-    lcd.print("        ");
-    lcd.setCursor(8, 0);
-    lcd.print((close_dist || motion) ? "Detected" : "None");
+    String line0 = (close_dist || motion) ? "Detected" : "None";
+    String line1 = isLock ? "Locked" : "Unlocked";
 
-    lcd.setCursor(8, 1);
-    lcd.print("        ");
-    lcd.setCursor(8, 1);
-    lcd.print(isLock ? "Locked" : "Unlocked");
+    if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
+      if (line0 != prevLine0) {
+        lcd.setCursor(8, 0);
+        lcd.print("        ");
+        lcd.setCursor(8, 0);
+        lcd.print(line0);
+        prevLine0 = line0;
+      }
 
-    vTaskDelay(pdMS_TO_TICKS(200));
+      if (line1 != prevLine1) {
+        lcd.setCursor(8, 1);
+        lcd.print("        ");
+        lcd.setCursor(8, 1);
+        lcd.print(line1);
+        prevLine1 = line1;
+      }
+
+      xSemaphoreGive(i2c_semaphore);
+    }
+
+    vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(200));
   }
 }

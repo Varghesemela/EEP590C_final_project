@@ -3,9 +3,10 @@
 
 #include <Arduino.h>
 #include <ESP32Servo.h>
-#include <LCD_I2C.h>
+#include <LiquidCrystal_I2C.h>
 #include <SPI.h>
 #include <MFRC522.h>
+#include <RTClib.h>
 
 // ========== Pin Definitions ==========
 extern const int LED;
@@ -30,6 +31,7 @@ extern TaskHandle_t TaskLCD_Handle;
 extern TaskHandle_t TaskUltraSonic_Handle;
 extern TaskHandle_t taskRFIDReader_Handle;
 extern TaskHandle_t taskPrinter_Handle;
+extern TaskHandle_t taskRTC_Handle;
 
 extern const char* allowedUIDs[];
 extern const int numAllowedUIDs;
@@ -39,11 +41,14 @@ extern const float SOUND_SPEED_CM_PER_US;
 extern const unsigned long debounceDelay;
 
 // ========== Peripheral Objects ==========
-extern LCD_I2C lcd;
+extern LiquidCrystal_I2C lcd;
 extern Servo myservo;
 extern MFRC522 rfid; // RFID instance
 extern QueueHandle_t rfidQueue;
+extern RTC_DS3231 rtc;            // RTC object
 
+// ========== Semaphore ==========
+extern SemaphoreHandle_t i2c_semaphore;
 
 // ========== State Flags ==========
 extern volatile bool motion;
