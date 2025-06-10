@@ -112,9 +112,9 @@ void setup() {
   xTaskCreatePinnedToCore(ServoRunTask, "servoRun", 2048, NULL, 1, &TaskServoRun_Handle, 0);
   xTaskCreatePinnedToCore(LCDTask, "LCDTask", 2048, NULL, 1, &TaskLCD_Handle, 0);
   xTaskCreatePinnedToCore(motionTask, "MotionTask", 2048, NULL, 1, &TaskMotion_Handle, 0);
-
+  
   xTaskCreatePinnedToCore(distanceTask, "UltraSonicTask", 2048, nullptr, 1, &TaskUltraSonic_Handle, 1);
-  xTaskCreatePinnedToCore(rtcTask, "RTC Task", 2048, NULL, 1, &taskRTC_Handle, 1);
+  // xTaskCreatePinnedToCore(rtcTask, "RTC Task", 2048, NULL, 1, &taskRTC_Handle, 1);
 }
 
 
