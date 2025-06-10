@@ -13,8 +13,12 @@ const int ECHO_PIN = 40;
 const int TRIG_PIN = 41;
 
 // Define pins for MFRC522
-const int SS_PIN = 10;
-const int RST_PIN = 14;
+const int SS_PIN = 20;
+const int RST_PIN = 0;
+const int MOSI_PIN = 47;
+const int MISO_PIN = 48;
+const int IRQ_PIN = 45;
+const int SCK_PIN = 21;
 
 //========= TASK HANDLES =========
 TaskHandle_t TaskLED_Handle = NULL;
@@ -30,7 +34,8 @@ TaskHandle_t taskRTC_Handle = NULL;
 const char* allowedUIDs[] = {
   "DE AD BE EF",
   "CA FE BA BE",
-  "BF 6D CB 1F"
+  "BF 6D CB 1F",
+  "79 49 4D B2"
 };
 const int numAllowedUIDs = sizeof(allowedUIDs) / sizeof(allowedUIDs[0]);
 

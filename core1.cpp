@@ -1,4 +1,4 @@
-#include <Arduino.h> 
+#include <Arduino.h>
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -55,13 +55,24 @@ void distanceTask(void* pvParameters) {
       sum += distanceBuffer[i];
     }
 
-    if (sum < 100) {
+    if (sum < 90 && sum != 0) {
       close_dist = true;
 
       // Reset inactivity timer
       if (!backlightOn) {
         backlightOn = true;
+        // Serial.println(sum);
+        if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
+          DateTime now = rtc.now();
+          Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
+          xSemaphoreGive(i2c_semaphore);
+        } else {
+          Serial.println("RTC I2C timeout");
+        }
         Serial.println("Backlight ON (proximity)");
+
+        esp_timer_stop(backlightTimer);
+        esp_timer_start_once(backlightTimer, 10000000);  // 10 sec = 10,000,000 us
       }
 
       // timerStop(backlightTimer);
@@ -70,14 +81,14 @@ void distanceTask(void* pvParameters) {
     } else {
       close_dist = false;
     }
-    
+
     // Serial.println("]");
 
     vTaskDelay(pdMS_TO_TICKS(200));
   }
 }
 
-void rtcTask(void *args) {
+void rtcTask(void* args) {
   TickType_t lastWakeTime = xTaskGetTickCount();
   const TickType_t interval = pdMS_TO_TICKS(120);
 

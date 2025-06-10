@@ -20,6 +20,10 @@ extern const int ECHO_PIN;
 extern const int TRIG_PIN;
 extern const int SS_PIN;
 extern const int RST_PIN;
+extern const int MOSI_PIN;
+extern const int MISO_PIN;
+extern const int IRQ_PIN;
+extern const int SCK_PIN;
 
 
 //========= TASK HANDLES =========
