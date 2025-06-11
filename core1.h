@@ -14,4 +14,7 @@
 void distanceTask(void* pvParameters);
 void rtcTask(void *args);
 
+void taskRFIDReader(void *pvParameters);
+void taskPrinter(void *pvParameters);
+
 #endif

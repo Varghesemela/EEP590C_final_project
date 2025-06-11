@@ -38,8 +38,6 @@ void ServoRunTask(void* arg);
 void motionTask(void* pvParameters);
 void LCDTask(void* arg);
 // Function prototypes
-void taskRFIDReader(void *pvParameters);
-void taskPrinter(void *pvParameters);
 
 void IRAM_ATTR onLockTimer(void* arg);
 void IRAM_ATTR onBacklightTimer(void* arg);
