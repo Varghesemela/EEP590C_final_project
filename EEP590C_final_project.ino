@@ -110,23 +110,24 @@ void setup() {
   rfidQueue = xQueueCreate(5, sizeof(char[20]));
   if (rfidQueue == NULL) {
     Serial.println("Error creating queue!");
-    while (1)
-      ;
+    while (1);
   }                                                                                         
 
   //RFID
-  xTaskCreatePinnedToCore(taskRFIDReader, "RFID Reader", 4096, NULL, 1, &taskRFIDReader_Handle, 0);
-  xTaskCreatePinnedToCore(taskPrinter, "Printer", 2048, NULL, 1, &taskPrinter_Handle, 0);
+  xTaskCreatePinnedToCore(taskRFIDReader, "RFID Reader", 4096, NULL, 1, &taskRFIDReader_Handle, 1);
+  xTaskCreatePinnedToCore(taskPrinter, "Printer", 2048, NULL, 1, &taskPrinter_Handle, 1);
 
   //servo
   xTaskCreatePinnedToCore(ServoRunTask, "servoRun", 2048, NULL, 1, &TaskServoRun_Handle, 0);
+
+  //Button (for debugging servo)
+  // xTaskCreatePinnedToCore(updateButtonTask, "updateButton", 1024, NULL, 1, &TaskUpdateButton_Handle, 0);
   
   //LCD
   xTaskCreatePinnedToCore(LCDTask, "LCDTask", 2048, NULL, 1, &TaskLCD_Handle, 0);
   xTaskCreatePinnedToCore(motionTask, "MotionTask", 2048, NULL, 1, &TaskMotion_Handle, 0);
   
   xTaskCreatePinnedToCore(distanceTask, "UltraSonicTask", 2048, nullptr, 1, &TaskUltraSonic_Handle, 1);
-  // xTaskCreatePinnedToCore(rtcTask, "RTC Task", 2048, NULL, 1, &taskRTC_Handle, 1);
 }
 
 

@@ -23,6 +23,7 @@ const int SCK_PIN = 21;
 //========= TASK HANDLES =========
 TaskHandle_t TaskLED_Handle = NULL;
 TaskHandle_t TaskServoRun_Handle = NULL;
+TaskHandle_t TaskUpdateButton_Handle = NULL;
 TaskHandle_t TaskMotion_Handle = NULL;
 TaskHandle_t TaskSound_Handle = NULL;
 TaskHandle_t TaskLCD_Handle = NULL;

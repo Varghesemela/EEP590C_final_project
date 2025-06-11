@@ -88,19 +88,103 @@ void distanceTask(void* pvParameters) {
   }
 }
 
-void rtcTask(void* args) {
-  TickType_t lastWakeTime = xTaskGetTickCount();
-  const TickType_t interval = pdMS_TO_TICKS(120);
-
+void taskRFIDReader(void* pvParameters) {
   while (1) {
-    if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
-      DateTime now = rtc.now();
-      Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
-      xSemaphoreGive(i2c_semaphore);
-    } else {
-      Serial.println("RTC I2C timeout");
+    if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {
+      char uidStr[20];
+      snprintf(uidStr, sizeof(uidStr), "%02X %02X %02X %02X",
+               rfid.uid.uidByte[0], rfid.uid.uidByte[1],
+               rfid.uid.uidByte[2], rfid.uid.uidByte[3]);
+
+      // Always send UID to queue, regardless of change
+      if (xQueueSend(rfidQueue, &uidStr, pdMS_TO_TICKS(100)) != pdPASS) {
+        Serial.println("Queue full! Dropping tag.");
+      }
+
+      rfid.PICC_HaltA();
+      rfid.PCD_StopCrypto1();
     }
 
-    vTaskDelayUntil(&lastWakeTime, interval);
+    vTaskDelay(pdMS_TO_TICKS(500));
+  }
+}
+
+void taskPrinter(void* pvParameters) {
+  char receivedUID[20];
+  char lastUID[20] = "";
+
+  while (1) {
+    if (xQueueReceive(rfidQueue, &receivedUID, portMAX_DELAY) == pdPASS) {
+      // Check if UID is allowed
+      bool isAllowed = false;
+      for (int i = 0; i < numAllowedUIDs; ++i) {
+        if (strcmp(receivedUID, allowedUIDs[i]) == 0) {
+          isAllowed = true;
+          break;
+        }
+      }
+
+      if (isAllowed) {
+        // Avoid printing duplicates
+        int sameIDscanned = strcmp(receivedUID, lastUID);
+        if ((sameIDscanned != 0) && isLock) {
+          if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
+            DateTime now = rtc.now();
+            Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
+            xSemaphoreGive(i2c_semaphore);
+          } else {
+            Serial.println("RTC I2C timeout");
+          }
+          Serial.print("Access Granted. UID: ");
+          Serial.println(receivedUID);
+          isLock = false;
+          xTaskNotifyGive(TaskServoRun_Handle);
+          // Reset timer when RFID grants access
+          esp_timer_stop(lockTimer);
+          esp_timer_start_once(lockTimer, 10000000);  // 10 sec = 10,000,000 us
+
+          // Reset inactivity timer
+          if (!backlightOn) {
+            backlightOn = true;
+            Serial.println("Backlight ON (RFID update)");
+            esp_timer_stop(backlightTimer);
+            esp_timer_start_once(backlightTimer, 10000000);  // 10 sec = 10,000,000 us
+          }
+          strncpy(lastUID, receivedUID, sizeof(lastUID));
+        } else {
+          if (isLock) {
+            isLock = false;
+            xTaskNotifyGive(TaskServoRun_Handle);
+            // Reset timer when RFID grants access
+            esp_timer_stop(lockTimer);
+            esp_timer_start_once(lockTimer, 10000000);  // 10 sec = 10,000,000 us
+
+            strncpy(lastUID, receivedUID, sizeof(lastUID));
+          } else {
+            if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
+              DateTime now = rtc.now();
+              Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
+              xSemaphoreGive(i2c_semaphore);
+            } else {
+              Serial.println("RTC I2C timeout");
+            }
+            Serial.println("Same tag re-scanned, and already unlocked. Ignoring...");
+          }
+        }
+      } else {
+        isLock = true;
+
+        //take semaphore and log in time
+        if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
+          DateTime now = rtc.now();
+          Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
+          xSemaphoreGive(i2c_semaphore);
+        } else {
+          Serial.println("RTC I2C timeout");
+        }
+        Serial.print("Access Denied. Unknown UID: ");
+        Serial.println(receivedUID);
+      }
+    }
   }
 }

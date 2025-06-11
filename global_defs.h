@@ -25,10 +25,10 @@ extern const int MISO_PIN;
 extern const int IRQ_PIN;
 extern const int SCK_PIN;
 
-
 //========= TASK HANDLES =========
 extern TaskHandle_t TaskLED_Handle;
 extern TaskHandle_t TaskServoRun_Handle;
+extern TaskHandle_t TaskUpdateButton_Handle;
 extern TaskHandle_t TaskMotion_Handle;
 extern TaskHandle_t TaskSound_Handle;
 extern TaskHandle_t TaskLCD_Handle;
