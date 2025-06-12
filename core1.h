@@ -16,5 +16,7 @@ void rtcTask(void *args);
 
 void taskRFIDReader(void *pvParameters);
 void taskPrinter(void *pvParameters);
+void sensorReadTask(void *pvParameters);
+void sensorProcessTask(void *pvParameters);
 
 #endif

@@ -7,6 +7,7 @@
 #include <SPI.h>
 #include <MFRC522.h>
 #include <RTClib.h>
+#include "driver/timer.h"
 
 // ========== Pin Definitions ==========
 extern const int LED;
@@ -36,7 +37,8 @@ extern TaskHandle_t TaskUltraSonic_Handle;
 extern TaskHandle_t taskRFIDReader_Handle;
 extern TaskHandle_t taskPrinter_Handle;
 extern TaskHandle_t taskRTC_Handle;
-
+extern TaskHandle_t taskSensorRead_Handle;
+extern TaskHandle_t taskSensorProcess_Handle;
 extern const char* allowedUIDs[];
 extern const int numAllowedUIDs;
 
@@ -44,18 +46,25 @@ extern const int numAllowedUIDs;
 extern const float SOUND_SPEED_CM_PER_US;
 extern const unsigned long debounceDelay;
 
+typedef struct {
+  float distanceCm;
+  int   motionState;   // HIGH or LOW from PIR
+} sensorData_t;
+
 // ========== Peripheral Objects ==========
 extern LiquidCrystal_I2C lcd;
 extern Servo myservo;
 extern MFRC522 rfid; // RFID instance
 extern QueueHandle_t rfidQueue;
+extern QueueHandle_t sensorQueue;
+
 extern RTC_DS3231 rtc;            // RTC object
 
 // ========== Semaphore ==========
 extern SemaphoreHandle_t i2c_semaphore;
 
 // ========== State Flags ==========
-extern volatile bool motion;
+extern volatile bool motion_detected;
 extern volatile bool close_dist;
 extern volatile bool isLock;
 
@@ -66,6 +75,8 @@ extern float distanceBuffer[5];
 extern volatile int bufferIndex;
 extern volatile int bufferIndex_sound;
 extern volatile int bufferIndex_dist;
+extern volatile int idx_dist;
+extern volatile int idx_motion;
 
 extern bool backlightOn;
 extern esp_timer_handle_t backlightTimer;
@@ -75,5 +86,10 @@ extern esp_timer_handle_t lockTimer;
 extern bool lastButtonReading;
 extern bool buttonState;
 extern unsigned long lastDebounceTime;
+
+// ========== Distance State ==========
+extern volatile uint64_t echo_start_us;
+extern volatile uint64_t echo_end_us;
+extern void IRAM_ATTR echoISR();
 
 #endif

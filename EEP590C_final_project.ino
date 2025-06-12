@@ -20,7 +20,6 @@
 #include <Wire.h>
 #include <ESP32Servo.h>
 #include <LiquidCrystal_I2C.h>
-#include "driver/timer.h"
 #include "global_defs.h"
 #include "core0.h"
 #include "core1.h"
@@ -93,6 +92,18 @@ void setup() {
   };
   esp_timer_create(&backlight_timer_args, &backlightTimer);
 
+  timer_config_t cfg = {
+    .alarm_en = TIMER_ALARM_DIS,          // no alarm
+    .counter_en = TIMER_PAUSE,            // start paused
+    .intr_type = TIMER_INTR_LEVEL,        // no IRQ
+    .counter_dir = TIMER_COUNT_UP,        // count up
+    .auto_reload = TIMER_AUTORELOAD_DIS,  // no reload
+    .clk_src = TIMER_SRC_CLK_APB,         // use APB (80 MHz)
+    .divider = 80                         // → 1 MHz tick → 1 µs resolution
+  };
+  timer_init(TIMER_GROUP_0, TIMER_0, &cfg);
+  timer_set_counter_value(TIMER_GROUP_0, TIMER_0, 0);
+  timer_start(TIMER_GROUP_0, TIMER_0);
   // Init RFID module
   SPI.begin(SCK_PIN, MISO_PIN, MOSI_PIN, SS_PIN);
   rfid.PCD_Init(SS_PIN, RST_PIN);
@@ -110,8 +121,13 @@ void setup() {
   rfidQueue = xQueueCreate(5, sizeof(char[20]));
   if (rfidQueue == NULL) {
     Serial.println("Error creating queue!");
-    while (1);
-  }                                                                                         
+    while (1)
+      ;
+  }
+  sensorQueue = xQueueCreate(10, sizeof(sensorData_t));
+  if (!sensorQueue) {
+    Serial.println("ERROR: failed to create sensorQueue");
+  }
 
   //RFID
   xTaskCreatePinnedToCore(taskRFIDReader, "RFID Reader", 4096, NULL, 1, &taskRFIDReader_Handle, 1);
@@ -122,12 +138,15 @@ void setup() {
 
   //Button (for debugging servo)
   // xTaskCreatePinnedToCore(updateButtonTask, "updateButton", 1024, NULL, 1, &TaskUpdateButton_Handle, 0);
-  
+
   //LCD
   xTaskCreatePinnedToCore(LCDTask, "LCDTask", 2048, NULL, 1, &TaskLCD_Handle, 0);
-  xTaskCreatePinnedToCore(motionTask, "MotionTask", 2048, NULL, 1, &TaskMotion_Handle, 0);
-  
-  xTaskCreatePinnedToCore(distanceTask, "UltraSonicTask", 2048, nullptr, 1, &TaskUltraSonic_Handle, 1);
+  // xTaskCreatePinnedToCore(motionTask, "MotionTask", 2048, NULL, 1, &TaskMotion_Handle, 0);
+
+  // xTaskCreatePinnedToCore(distanceTask, "UltraSonicTask", 2048, nullptr, 1, &TaskUltraSonic_Handle, 1);
+  xTaskCreatePinnedToCore(sensorReadTask, "SensorReadTask", 8192, NULL, 1, &taskSensorRead_Handle, 1);
+  xTaskCreatePinnedToCore(sensorProcessTask, "SensorProcessTask", 8192, NULL, 1, &taskSensorProcess_Handle, 1);
+  attachInterrupt(ECHO_PIN, echoISR, CHANGE);
 }
 
 
