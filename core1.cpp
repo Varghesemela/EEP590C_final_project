@@ -98,9 +98,9 @@ void sensorReadTask(void* pvParameters) {
     delayMicroseconds(10);
     digitalWrite(TRIG_PIN, LOW);
 
-    // — Measure echo with timeout ~6.5 m (38 000 µs) —
+    // — Measure echo with timeout ~3.4 m (20 000 µs) —
     // unsigned long dur = pulseIn(ECHO_PIN, HIGH, 38000UL);
-    uint32_t notified = ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(38));
+    uint32_t notified = ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(20));
 
     uint32_t dur = 0;
     if (notified) {
@@ -118,8 +118,8 @@ void sensorReadTask(void* pvParameters) {
     // — Send both readings to processing task —
     xQueueSend(sensorQueue, &data, portMAX_DELAY);
 
-    // — pace readings at 200 ms intervals —
-    vTaskDelay(pdMS_TO_TICKS(200));
+    // — pace readings at 20 ms intervals — 50Hz
+    vTaskDelay(pdMS_TO_TICKS(20));
   }
 }
 
@@ -139,19 +139,19 @@ void sensorProcessTask(void* pvParameters) {
       // 2) compute sums
       float sumDist = 0;
       int sumMotion = 0;
-      Serial.print("Distances: [");
+      // Serial.print("Distances: [");
       for (int i = 0; i < 5; i++) {
-        Serial.print(distanceBuffer[i], 2);
-        if (i < 4) Serial.print(", ");
+        // Serial.print(distanceBuffer[i], 2);
+        // if (i < 4) Serial.print(", ");
         sumDist += distanceBuffer[i];
       }
-      Serial.print("]  Motion: [");
+      // Serial.print("]  Motion: [");
       for (int i = 0; i < 5; i++) {
-        Serial.print(motionBuffer[i]);
-        if (i < 4) Serial.print(", ");
+        // Serial.print(motionBuffer[i]);
+        // if (i < 4) Serial.print(", ");
         sumMotion += motionBuffer[i];
       }
-      Serial.println("]");
+      // Serial.println("]");
 
       // 3) proximity logic
       if (sumDist < 90.0f && sumDist > 0.0f) {
@@ -174,6 +174,7 @@ void sensorProcessTask(void* pvParameters) {
           DateTime now = rtc.now();
           Serial.printf("Time: %02d:%02d:%02d\n",
                         now.hour(), now.minute(), now.second());
+          Serial.println(close_dist ? "Distance" : "Motion");
           xSemaphoreGive(i2c_semaphore);
         }
         Serial.println("Backlight ON");
@@ -225,13 +226,6 @@ void taskPrinter(void* pvParameters) {
         // Avoid printing duplicates
         int sameIDscanned = strcmp(receivedUID, lastUID);
         if ((sameIDscanned != 0) && isLock) {
-          if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
-            DateTime now = rtc.now();
-            Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
-            xSemaphoreGive(i2c_semaphore);
-          } else {
-            Serial.println("RTC I2C timeout");
-          }
           Serial.print("Access Granted. UID: ");
           Serial.println(receivedUID);
           isLock = false;

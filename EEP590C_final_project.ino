@@ -101,9 +101,11 @@ void setup() {
     .clk_src = TIMER_SRC_CLK_APB,         // use APB (80 MHz)
     .divider = 80                         // → 1 MHz tick → 1 µs resolution
   };
+
   timer_init(TIMER_GROUP_0, TIMER_0, &cfg);
   timer_set_counter_value(TIMER_GROUP_0, TIMER_0, 0);
   timer_start(TIMER_GROUP_0, TIMER_0);
+
   // Init RFID module
   SPI.begin(SCK_PIN, MISO_PIN, MOSI_PIN, SS_PIN);
   rfid.PCD_Init(SS_PIN, RST_PIN);
@@ -141,8 +143,9 @@ void setup() {
 
   //LCD
   xTaskCreatePinnedToCore(LCDTask, "LCDTask", 2048, NULL, 1, &TaskLCD_Handle, 0);
-  // xTaskCreatePinnedToCore(motionTask, "MotionTask", 2048, NULL, 1, &TaskMotion_Handle, 0);
 
+  // Sensor tasks
+  // xTaskCreatePinnedToCore(motionTask, "MotionTask", 2048, NULL, 1, &TaskMotion_Handle, 0);
   // xTaskCreatePinnedToCore(distanceTask, "UltraSonicTask", 2048, nullptr, 1, &TaskUltraSonic_Handle, 1);
   xTaskCreatePinnedToCore(sensorReadTask, "SensorReadTask", 8192, NULL, 1, &taskSensorRead_Handle, 1);
   xTaskCreatePinnedToCore(sensorProcessTask, "SensorProcessTask", 8192, NULL, 1, &taskSensorProcess_Handle, 1);

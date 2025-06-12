@@ -11,8 +11,8 @@
 
 // Task function prototypes
 
-void distanceTask(void* pvParameters);
-void rtcTask(void *args);
+void distanceTask(void* pvParameters); ///< Deprecated
+void rtcTask(void *args); ///< Deprecated
 
 void taskRFIDReader(void *pvParameters);
 void taskPrinter(void *pvParameters);

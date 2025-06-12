@@ -70,9 +70,23 @@ void ServoRunTask(void* arg) {
 
     if (isLock) {
       myservo.write(180);
+      if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
+        DateTime now = rtc.now();
+        Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
+        xSemaphoreGive(i2c_semaphore);
+      } else {
+        Serial.println("RTC I2C timeout");
+      }
       Serial.println("Servo locked");
     } else {
       myservo.write(0);
+      if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
+        DateTime now = rtc.now();
+        Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
+        xSemaphoreGive(i2c_semaphore);
+      } else {
+        Serial.println("RTC I2C timeout");
+      }
       Serial.println("Servo unlocked");
     }
   }
@@ -168,6 +182,6 @@ void LCDTask(void* arg) {
       xSemaphoreGive(i2c_semaphore);
     }
 
-    vTaskDelay(pdMS_TO_TICKS(200));
+    vTaskDelay(pdMS_TO_TICKS(31.25));
   }
 }

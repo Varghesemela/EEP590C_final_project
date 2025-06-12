@@ -35,7 +35,7 @@ extern portMUX_TYPE timerMux;
 // Task function prototypes
 void updateButtonTask(void* arg);
 void ServoRunTask(void* arg);
-void motionTask(void* pvParameters);
+void motionTask(void* pvParameters); ///< deprecated
 void LCDTask(void* arg);
 // Function prototypes
 
