@@ -90,6 +90,8 @@
 
 void sensorReadTask(void* pvParameters) {
   sensorData_t data;
+  TickType_t xLastWakeTime;
+  xLastWakeTime = xTaskGetTickCount();
   while (1) {
     // — Ultrasonic trigger pulse —
     digitalWrite(TRIG_PIN, LOW);
@@ -119,7 +121,7 @@ void sensorReadTask(void* pvParameters) {
     xQueueSend(sensorQueue, &data, portMAX_DELAY);
 
     // — pace readings at 20 ms intervals — 50Hz
-    vTaskDelay(pdMS_TO_TICKS(20));
+    vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(20));
   }
 }
 
