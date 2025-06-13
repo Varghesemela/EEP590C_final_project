@@ -38,6 +38,8 @@ void taskPrinter(void *pvParameters);
 void sensorReadTask(void *pvParameters);
 void sensorProcessTask(void *pvParameters);
 
+extern void IRAM_ATTR echoISR();
+
 /**
  * @brief (Deprecated) Task to handle RTC functionality (current version incorporates this without the help of this task).
  * @param args Unused

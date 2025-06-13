@@ -68,6 +68,7 @@
 void setup() {
   Serial.begin(115200);
 
+  //========= GPIO PIN INIT =========
   pinMode(PIR_PIN, INPUT);
   pinMode(LED, OUTPUT);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
@@ -91,7 +92,6 @@ void setup() {
   ledcAttach(LED, 100, 12);
 
   //========= SERVO INIT =========
-  ESP32PWM::allocateTimer(0);
   ESP32PWM::allocateTimer(1);
   myservo.setPeriodHertz(50);
   myservo.attach(SERVO_PIN, 500, 2400);
@@ -172,19 +172,17 @@ void setup() {
   // Name: RFID Printer Task
   xTaskCreatePinnedToCore(taskPrinter, "Printer", 2048, NULL, 1, &taskPrinter_Handle, 1);
 
-  // Name: Servo Controller Task
-  xTaskCreatePinnedToCore(ServoRunTask, "servoRun", 2048, NULL, 1, &TaskServoRun_Handle, 0);
-
-  //Button (for debugging servo)
-
-  // Name: LCD Display Task
-  xTaskCreatePinnedToCore(LCDTask, "LCDTask", 2048, NULL, 1, &TaskLCD_Handle, 0);
-
   // Name: Sensor Read Task
   xTaskCreatePinnedToCore(sensorReadTask, "SensorReadTask", 8192, NULL, 1, &taskSensorRead_Handle, 1);
 
   // Name: Sensor Process Task
   xTaskCreatePinnedToCore(sensorProcessTask, "SensorProcessTask", 8192, NULL, 1, &taskSensorProcess_Handle, 1);
+
+  // Name: Servo Controller Task
+  xTaskCreatePinnedToCore(ServoRunTask, "servoRun", 2048, NULL, 1, &TaskServoRun_Handle, 0);
+
+  // Name: LCD Display Task
+  xTaskCreatePinnedToCore(LCDTask, "LCDTask", 2048, NULL, 1, &TaskLCD_Handle, 0);
 
   //========= DEBUG TASKS =========
   // xTaskCreatePinnedToCore(motionTask, "MotionTask", 2048, NULL, 1, &TaskMotion_Handle, 0);

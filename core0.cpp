@@ -82,32 +82,6 @@ void IRAM_ATTR onBacklightTimer(void* arg) {
 }
 
 //========= TASK DEFINITIONS =========
-
-/**
- * @brief (Deprecated) Debounced button monitor for lock toggle 
- * @details Reads a button pin, and if a rising edge is detected,
- *          it toggles the lock state and notifies the servo task.
- * @note Name: updateButtonTask
- */
-void updateButtonTask(void* arg) {
-  bool currentReading = digitalRead(BUTTON_PIN);
-
-  if (currentReading != lastButtonReading) {
-    lastDebounceTime = millis();
-  }
-
-  if ((millis() - lastDebounceTime) > debounceDelay) {
-    if (currentReading != buttonState) {
-      if (buttonState == LOW && currentReading == HIGH) {
-        isLock = !isLock;
-        xTaskNotifyGive(TaskServoRun_Handle);
-      }
-      buttonState = currentReading;
-    }
-  }
-  lastButtonReading = currentReading;
-}
-
 /**
  * @brief Servo motor controller for lock mechanism
  * @details Waits on notification to engage/disengage lock and logs timestamp.
@@ -141,68 +115,6 @@ void ServoRunTask(void* arg) {
       Serial.println("Servo unlocked");
     }
   }
-}
-
-/**
- * @brief (Deprecated) PIR motion sampling and backlight trigger task
- * @details Samples PIR readings into a buffer and triggers LCD backlight timer.
- *          Logs activity timestamp via RTC.
- * @note Name: motionTask
- */
-void motionTask(void* pvParameters) {
-  // // Allow time for Serial + PIR to stabilize:
-  // vTaskDelay(pdMS_TO_TICKS(200));
-
-  // while (1) {
-  //   // HIGH (1) means motion detected; LOW (0) means no motion.
-  //   int state = digitalRead(PIR_PIN);
-
-  //   // Store it in the circular buffer:
-  //   motionBuffer[bufferIndex] = state;
-  //   bufferIndex = (bufferIndex + 1) % 5;
-
-  //   // Print the newest reading:
-  //   // Serial.print("Newest state: ");
-  //   // Serial.println(state == HIGH ? "MOTION" : "no motion");
-  //   // Serial.print("   [Next write index = ");
-  //   // Serial.print(bufferIndex);
-  //   // Serial.println("]");
-
-  //   // Print out the entire buffer (indices 0–4):
-  //   // Serial.print("Buffer contents: [");
-  //   int sum = 0;
-  //   for (int i = 0; i < 5; i++) {
-  //     // Serial.print(motionBuffer[i]);
-  //     // if (i < 4) {
-  //     // Serial.print(", ");
-  //     // }
-  //     sum += motionBuffer[i];
-  //   }
-  //   // Serial.println("]");
-
-  //   if (sum > 2) {
-  //     motion = true;
-  //     if (!backlightOn) {
-  //       backlightOn = true;
-  //       if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
-  //         DateTime now = rtc.now();
-  //         Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
-  //         xSemaphoreGive(i2c_semaphore);
-  //       } else {
-  //         Serial.println("RTC I2C timeout");
-  //       }
-  //       Serial.println("Backlight ON (motion)");
-
-  //       esp_timer_stop(backlightTimer);
-  //       esp_timer_start_once(backlightTimer, 10000000);  // 10 sec = 10,000,000 us
-  //     }
-  //   } else {
-  //     motion = false;
-  //   }
-
-  //   // 5) Delay 200 ms before the next sample:
-  //   vTaskDelay(pdMS_TO_TICKS(200));
-  // }
 }
 
 /**
@@ -246,5 +158,92 @@ void LCDTask(void* arg) {
     }
 
     vTaskDelay(pdMS_TO_TICKS(31.25));
+  }
+}
+
+/**
+ * @brief (Deprecated) Debounced button monitor for lock toggle 
+ * @details Reads a button pin, and if a rising edge is detected,
+ *          it toggles the lock state and notifies the servo task.
+ * @note Name: updateButtonTask
+ */
+void updateButtonTask(void* arg) {
+  bool currentReading = digitalRead(BUTTON_PIN);
+
+  if (currentReading != lastButtonReading) {
+    lastDebounceTime = millis();
+  }
+
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    if (currentReading != buttonState) {
+      if (buttonState == LOW && currentReading == HIGH) {
+        isLock = !isLock;
+        xTaskNotifyGive(TaskServoRun_Handle);
+      }
+      buttonState = currentReading;
+    }
+  }
+  lastButtonReading = currentReading;
+}
+
+
+/**
+ * @brief (Deprecated) PIR motion sampling and backlight trigger task
+ * @details Samples PIR readings into a buffer and triggers LCD backlight timer.
+ *          Logs activity timestamp via RTC.
+ * @note Name: motionTask
+ */
+void motionTask(void* pvParameters) {
+  // Allow time for Serial + PIR to stabilize:
+  vTaskDelay(pdMS_TO_TICKS(200));
+
+  while (1) {
+    // HIGH (1) means motion detected; LOW (0) means no motion.
+    int state = digitalRead(PIR_PIN);
+
+    // Store it in the circular buffer:
+    motionBuffer[bufferIndex] = state;
+    bufferIndex = (bufferIndex + 1) % 5;
+
+    // Print the newest reading:
+    // Serial.print("Newest state: ");
+    // Serial.println(state == HIGH ? "MOTION" : "no motion");
+    // Serial.print("   [Next write index = ");
+    // Serial.print(bufferIndex);
+    // Serial.println("]");
+
+    // Print out the entire buffer (indices 0–4):
+    // Serial.print("Buffer contents: [");
+    int sum = 0;
+    for (int i = 0; i < 5; i++) {
+      // Serial.print(motionBuffer[i]);
+      // if (i < 4) {
+      // Serial.print(", ");
+      // }
+      sum += motionBuffer[i];
+    }
+    // Serial.println("]");
+
+    if (sum > 2) {
+      motion_detected = true;
+      if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
+        DateTime now = rtc.now();
+        Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
+        xSemaphoreGive(i2c_semaphore);
+      } else {
+        Serial.println("RTC I2C timeout");
+      }
+      if (!backlightOn) {
+        backlightOn = true;
+        Serial.println("Backlight ON (motion)");
+        esp_timer_stop(backlightTimer);
+        esp_timer_start_once(backlightTimer, 10000000);  // 10 sec = 10,000,000 us
+      }
+    } else {
+      motion_detected = false;
+    }
+
+    // 5) Delay 200 ms before the next sample:
+    vTaskDelay(pdMS_TO_TICKS(200));
   }
 }

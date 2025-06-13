@@ -108,6 +108,5 @@ extern unsigned long lastDebounceTime;
 // ========== Distance State ==========
 extern volatile uint64_t echo_start_us;
 extern volatile uint64_t echo_end_us;
-extern void IRAM_ATTR echoISR();
 
 #endif

@@ -118,28 +118,3 @@ unsigned long lastDebounceTime = 0;  ///< Time of last button state change
 // ========== Distance State ==========
 volatile uint64_t echo_start_us = 0;  ///< Echo pulse start time (μs)
 volatile uint64_t echo_end_us = 0;    ///< Echo pulse end time (μs)
-
-/**
- * @brief Interrupt Service Routine for ultrasonic echo pin.
- * 
- * @details
- * On rising edge, resets the timer counter to begin measuring the echo.
- * On falling edge, captures the time from the hardware timer and notifies
- * the sensor reading task using FreeRTOS ISR-safe notification API.
- */
-void IRAM_ATTR echoISR() {
-  uint64_t t;
-  if (digitalRead(ECHO_PIN)) {
-    // rising edge → start timing
-    echo_start_us = 0;
-    timer_set_counter_value(TIMER_GROUP_0, TIMER_0, 0);
-  } else {
-    // falling edge → end timing & notify task
-    timer_get_counter_value(TIMER_GROUP_0, TIMER_0, &t);
-    echo_end_us = t;
-
-    BaseType_t woken = pdFALSE;
-    vTaskNotifyGiveFromISR(taskSensorRead_Handle, &woken);
-    portYIELD_FROM_ISR();
-  }
-}
