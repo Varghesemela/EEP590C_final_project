@@ -1,0 +1,721 @@
+\doxysection{global\+\_\+defs.\+h File Reference}
+\hypertarget{global__defs_8h}{}\label{global__defs_8h}\index{global\_defs.h@{global\_defs.h}}
+
+
+Global declarations for Smart Security Door system.  
+
+
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$ESP32\+Servo.\+h$>$}\newline
+{\ttfamily \#include $<$Liquid\+Crystal\+\_\+\+I2\+C.\+h$>$}\newline
+{\ttfamily \#include $<$SPI.\+h$>$}\newline
+{\ttfamily \#include $<$MFRC522.\+h$>$}\newline
+{\ttfamily \#include $<$RTClib.\+h$>$}\newline
+{\ttfamily \#include "{}driver/timer.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structsensor_data__t}{sensor\+Data\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void IRAM\+\_\+\+ATTR \mbox{\hyperlink{global__defs_8h_a8729208fe4d95f17250b25780e5654dc}{echo\+ISR}} ()
+\begin{DoxyCompactList}\small\item\em Interrupt Service Routine for ultrasonic echo pin. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const int \mbox{\hyperlink{global__defs_8h_a734029c5fc6508cd75bf19cd7f52b66d}{LED}}
+\begin{DoxyCompactList}\small\item\em On-\/board LED pin. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_a93a85a5200e90faaef61f936275f9e39}{SERVO\+\_\+\+PIN}}
+\begin{DoxyCompactList}\small\item\em Servo motor control pin. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_a30fd76f0f4363cddea28599c01378ef3}{POT\+\_\+\+PIN}}
+\item 
+const int \mbox{\hyperlink{global__defs_8h_a4adb49baac164d761359c1af0d2c2bb2}{BUTTON\+\_\+\+PIN}}
+\begin{DoxyCompactList}\small\item\em Manual servo lock/unlock button. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_a8880a210d3d7b654ed6095612f350147}{SDA\+\_\+\+PIN}}
+\begin{DoxyCompactList}\small\item\em I2C SDA line. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_a6fa077bdb86507b0c98cd47b0e0989b4}{SCL\+\_\+\+PIN}}
+\begin{DoxyCompactList}\small\item\em I2C SCL line. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_a22efb88130cbace44007553eec72a188}{PIR\+\_\+\+PIN}}
+\begin{DoxyCompactList}\small\item\em PIR motion sensor pin. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_a7a38f8fe2250c2011a6a8c7d13c66ca7}{ECHO\+\_\+\+PIN}}
+\begin{DoxyCompactList}\small\item\em Echo pin for ultrasonic distance sensor. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_a4468fd3e9632684e6b1e52f47fe7ca27}{TRIG\+\_\+\+PIN}}
+\begin{DoxyCompactList}\small\item\em Trigger pin for ultrasonic distance sensor. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_a67257d53cf891973c2845a899eeaef7d}{SS\+\_\+\+PIN}}
+\begin{DoxyCompactList}\small\item\em RFID slave select. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_a3ff2e02d6209d87e1e11d2bd43275236}{RST\+\_\+\+PIN}}
+\begin{DoxyCompactList}\small\item\em RFID reset pin. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_ae292b4bb0383ed60bcf040f0f1c1fd61}{MOSI\+\_\+\+PIN}}
+\begin{DoxyCompactList}\small\item\em SPI MOSI pin. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_a28968e484677c283dc1c5339e5e60421}{MISO\+\_\+\+PIN}}
+\begin{DoxyCompactList}\small\item\em SPI MISO pin. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_a78b536c62aeaf86c6adc9384fa185bca}{IRQ\+\_\+\+PIN}}
+\begin{DoxyCompactList}\small\item\em RFID interrupt pin (not used, but defined if needed) \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_ade4ce3492653f530431c3aa6f3b73ed1}{SCK\+\_\+\+PIN}}
+\begin{DoxyCompactList}\small\item\em SPI clock pin. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a441cd3d104a596813a403100482c451f}{Task\+LED\+\_\+\+Handle}}
+\begin{DoxyCompactList}\small\item\em LED blinking task. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a401b14ba5a1ca314c371858b4c0e75d2}{Task\+Servo\+Run\+\_\+\+Handle}}
+\begin{DoxyCompactList}\small\item\em Servo motor control task. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a722fb5574a3842577bae492875908f78}{Task\+Update\+Button\+\_\+\+Handle}}
+\begin{DoxyCompactList}\small\item\em Button debounce and state update task. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a18c2fed31b163e64f1f283aba1f510e0}{Task\+Motion\+\_\+\+Handle}}
+\begin{DoxyCompactList}\small\item\em PIR sensor logic task. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_ad590dea6bfbdef17e61133662d34de1a}{Task\+Sound\+\_\+\+Handle}}
+\begin{DoxyCompactList}\small\item\em Sound detection task. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a4080e16b635b2c3a63fb21ff5a127316}{Task\+LCD\+\_\+\+Handle}}
+\begin{DoxyCompactList}\small\item\em LCD display update task. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a4cab83ec5008742449ea361a0d26f3d1}{Task\+Ultra\+Sonic\+\_\+\+Handle}}
+\begin{DoxyCompactList}\small\item\em Ultrasonic distance sensing task (legacy) \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a77dceabbd02bc08a87ace2f3b8d161a3}{task\+RFIDReader\+\_\+\+Handle}}
+\begin{DoxyCompactList}\small\item\em RFID scanning task. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a75912ff73c3d0a4c832ee9dfbb9eb73f}{task\+Printer\+\_\+\+Handle}}
+\begin{DoxyCompactList}\small\item\em RFID tag validation and access control. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a33ea043cc379ef2c0e36e0f9e9559335}{task\+RTC\+\_\+\+Handle}}
+\begin{DoxyCompactList}\small\item\em RTC timestamping task (deprecated) \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a475755d65e70d4a6a7f2223d2a0d9e3f}{task\+Sensor\+Read\+\_\+\+Handle}}
+\begin{DoxyCompactList}\small\item\em Unified sensor reading task. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a9206a6b571a3641bdb4fdea09739c7a6}{task\+Sensor\+Process\+\_\+\+Handle}}
+\begin{DoxyCompactList}\small\item\em Sensor data processing task. \end{DoxyCompactList}\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{global__defs_8h_a0f037bc07c21848facfb8a31a32a0719}{allowed\+UIDs}} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em List of authorized RFID UIDs. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{global__defs_8h_a914b0c79284494a5f545381d66afb8f7}{num\+Allowed\+UIDs}}
+\begin{DoxyCompactList}\small\item\em Count of allowed UIDs. \end{DoxyCompactList}\item 
+const float \mbox{\hyperlink{global__defs_8h_a5c8221e125b450af1faf364d9d3d0601}{SOUND\+\_\+\+SPEED\+\_\+\+CM\+\_\+\+PER\+\_\+\+US}}
+\begin{DoxyCompactList}\small\item\em Speed of sound in cm/μs. \end{DoxyCompactList}\item 
+const unsigned long \mbox{\hyperlink{global__defs_8h_a7d466b68c5e24096e6bcd063f3ab8736}{debounce\+Delay}}
+\begin{DoxyCompactList}\small\item\em Debounce duration in milliseconds. \end{DoxyCompactList}\item 
+Liquid\+Crystal\+\_\+\+I2C \mbox{\hyperlink{global__defs_8h_a0b3886fc5d22cd9c3db5f0da7b01a2ce}{lcd}}
+\item 
+Servo \mbox{\hyperlink{global__defs_8h_ab7eaefeafe574cbf45415789bf672403}{myservo}}
+\begin{DoxyCompactList}\small\item\em Servo motor instance. \end{DoxyCompactList}\item 
+MFRC522 \mbox{\hyperlink{global__defs_8h_a3d48b337cfb6e4913f1609f55558732a}{rfid}}
+\item 
+Queue\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a815ec01183b60a4ed63828cd1ef54748}{rfid\+Queue}}
+\begin{DoxyCompactList}\small\item\em Queue for RFID UID strings. \end{DoxyCompactList}\item 
+Queue\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_ac6b1fae2430dc808236d5f86df609c56}{sensor\+Queue}}
+\begin{DoxyCompactList}\small\item\em Queue for \doxylink{structsensor_data__t}{sensor\+Data\+\_\+t} structs. \end{DoxyCompactList}\item 
+RTC\+\_\+\+DS3231 \mbox{\hyperlink{global__defs_8h_afa042f998806fcdedab1794cebbeaad3}{rtc}}
+\begin{DoxyCompactList}\small\item\em Real-\/time clock instance. \end{DoxyCompactList}\item 
+Semaphore\+Handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a053c06a507276ec243ee301bdfb284a9}{i2c\+\_\+semaphore}}
+\begin{DoxyCompactList}\small\item\em Semaphore to manage I2C bus access. \end{DoxyCompactList}\item 
+volatile bool \mbox{\hyperlink{global__defs_8h_abd70e7476ee48b5662e7ab00b6b4bc01}{motion\+\_\+detected}}
+\begin{DoxyCompactList}\small\item\em Motion state flag (true if detected) \end{DoxyCompactList}\item 
+volatile bool \mbox{\hyperlink{global__defs_8h_abae73da6a21c890181aeea556b060ccb}{close\+\_\+dist}}
+\begin{DoxyCompactList}\small\item\em Proximity state flag (true if close) \end{DoxyCompactList}\item 
+volatile bool \mbox{\hyperlink{global__defs_8h_acd0fef286013edfa4ecbba7a57b66dad}{is\+Lock}}
+\begin{DoxyCompactList}\small\item\em Lock state flag (true if locked) \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{global__defs_8h_a9c742658e2073d4dc1d9b492cf0de6eb}{motion\+Buffer}} \mbox{[}5\mbox{]}
+\begin{DoxyCompactList}\small\item\em Circular buffer for motion readings. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{global__defs_8h_a7243f265e5b2326dea09eda1614f0756}{distance\+Buffer}} \mbox{[}5\mbox{]}
+\begin{DoxyCompactList}\small\item\em Circular buffer for distance measurements. \end{DoxyCompactList}\item 
+volatile int \mbox{\hyperlink{global__defs_8h_a4b89a73e0fa3f732d2ad4bc0982f83f1}{buffer\+Index}}
+\begin{DoxyCompactList}\small\item\em General buffer index. \end{DoxyCompactList}\item 
+volatile int \mbox{\hyperlink{global__defs_8h_a153060430d519f35d65d750aed7718e6}{buffer\+Index\+\_\+sound}}
+\begin{DoxyCompactList}\small\item\em Sound buffer write index. \end{DoxyCompactList}\item 
+volatile int \mbox{\hyperlink{global__defs_8h_ada7390ca89a3a685aade01e709c9e970}{buffer\+Index\+\_\+dist}}
+\begin{DoxyCompactList}\small\item\em Distance buffer write index. \end{DoxyCompactList}\item 
+volatile int \mbox{\hyperlink{global__defs_8h_a3bd90c0cc06e6865ed6292b51c0e99e4}{idx\+\_\+dist}}
+\begin{DoxyCompactList}\small\item\em Read index for distance processing. \end{DoxyCompactList}\item 
+volatile int \mbox{\hyperlink{global__defs_8h_ad21b88565fd6af381b783ac46e03e57c}{idx\+\_\+motion}}
+\begin{DoxyCompactList}\small\item\em Read index for motion processing. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{global__defs_8h_a61e7f4bbe65ad3029357668b5e595488}{backlight\+On}}
+\begin{DoxyCompactList}\small\item\em LCD backlight state flag. \end{DoxyCompactList}\item 
+esp\+\_\+timer\+\_\+handle\+\_\+t \mbox{\hyperlink{global__defs_8h_a3acdda76d4bd210064901d176466fa01}{backlight\+Timer}}
+\begin{DoxyCompactList}\small\item\em Timer for backlight timeout. \end{DoxyCompactList}\item 
+esp\+\_\+timer\+\_\+handle\+\_\+t \mbox{\hyperlink{global__defs_8h_aeb7f8fa8c8cd97a8128ca91b8841e5ea}{lock\+Timer}}
+\begin{DoxyCompactList}\small\item\em Timer for lock reset after granted access. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{global__defs_8h_a31c00481d2a709bb2873743c3b1a5cb5}{last\+Button\+Reading}}
+\begin{DoxyCompactList}\small\item\em Previous raw reading of button. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{global__defs_8h_a5554694551ee136cf28fefadeccb86f7}{button\+State}}
+\begin{DoxyCompactList}\small\item\em Debounced button state. \end{DoxyCompactList}\item 
+unsigned long \mbox{\hyperlink{global__defs_8h_a025a85b33749fd5dde5cb7edd7aea941}{last\+Debounce\+Time}}
+\begin{DoxyCompactList}\small\item\em Time of last button state change. \end{DoxyCompactList}\item 
+volatile uint64\+\_\+t \mbox{\hyperlink{global__defs_8h_aa6dfcece01eb915318b3814c9de4ab06}{echo\+\_\+start\+\_\+us}}
+\begin{DoxyCompactList}\small\item\em Echo pulse start time (μs) \end{DoxyCompactList}\item 
+volatile uint64\+\_\+t \mbox{\hyperlink{global__defs_8h_a4bc4af77eef66fe889ba51f013f5626b}{echo\+\_\+end\+\_\+us}}
+\begin{DoxyCompactList}\small\item\em Echo pulse end time (μs) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Global declarations for Smart Security Door system. 
+
+This header provides external declarations for all globally used hardware pin definitions, task handles, semaphores, peripheral objects, sensor state variables, buffers, and RTOS resources. It is shared across all components of the system such as RFID access control, distance sensing, LCD display, and real-\/time clock functionalities.
+
+It complements {\ttfamily \doxylink{global__defs_8cpp}{global\+\_\+defs.\+cpp}} where these variables are defined and initialized.
+
+\begin{DoxyAuthor}{Authors}
+Authors Created by Sanjay Varghese, 2025 ~\newline
+ Additionally modified by Sai Jayanth Kalisi, 2025 ~\newline
+ Additionally modified by Ankit Telluri, 2025 
+\end{DoxyAuthor}
+
+
+\label{doc-func-members}
+\Hypertarget{global__defs_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{global__defs_8h_a8729208fe4d95f17250b25780e5654dc}\index{global\_defs.h@{global\_defs.h}!echoISR@{echoISR}}
+\index{echoISR@{echoISR}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{echoISR()}{echoISR()}}
+{\footnotesize\ttfamily \label{global__defs_8h_a8729208fe4d95f17250b25780e5654dc} 
+void IRAM\+\_\+\+ATTR echo\+ISR (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Interrupt Service Routine for ultrasonic echo pin. 
+
+On rising edge, resets the timer counter to begin measuring the echo. On falling edge, captures the time from the hardware timer and notifies the sensor reading task using Free\+RTOS ISR-\/safe notification API. 
+
+\label{doc-var-members}
+\Hypertarget{global__defs_8h_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{global__defs_8h_a0f037bc07c21848facfb8a31a32a0719}\index{global\_defs.h@{global\_defs.h}!allowedUIDs@{allowedUIDs}}
+\index{allowedUIDs@{allowedUIDs}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{allowedUIDs}{allowedUIDs}}
+{\footnotesize\ttfamily \label{global__defs_8h_a0f037bc07c21848facfb8a31a32a0719} 
+const char\texorpdfstring{$\ast$}{*} allowed\+UIDs\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+List of authorized RFID UIDs. 
+
+\Hypertarget{global__defs_8h_a61e7f4bbe65ad3029357668b5e595488}\index{global\_defs.h@{global\_defs.h}!backlightOn@{backlightOn}}
+\index{backlightOn@{backlightOn}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{backlightOn}{backlightOn}}
+{\footnotesize\ttfamily \label{global__defs_8h_a61e7f4bbe65ad3029357668b5e595488} 
+bool backlight\+On\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+LCD backlight state flag. 
+
+\Hypertarget{global__defs_8h_a3acdda76d4bd210064901d176466fa01}\index{global\_defs.h@{global\_defs.h}!backlightTimer@{backlightTimer}}
+\index{backlightTimer@{backlightTimer}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{backlightTimer}{backlightTimer}}
+{\footnotesize\ttfamily \label{global__defs_8h_a3acdda76d4bd210064901d176466fa01} 
+esp\+\_\+timer\+\_\+handle\+\_\+t backlight\+Timer\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Timer for backlight timeout. 
+
+\Hypertarget{global__defs_8h_a4b89a73e0fa3f732d2ad4bc0982f83f1}\index{global\_defs.h@{global\_defs.h}!bufferIndex@{bufferIndex}}
+\index{bufferIndex@{bufferIndex}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{bufferIndex}{bufferIndex}}
+{\footnotesize\ttfamily \label{global__defs_8h_a4b89a73e0fa3f732d2ad4bc0982f83f1} 
+volatile int buffer\+Index\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+General buffer index. 
+
+\Hypertarget{global__defs_8h_ada7390ca89a3a685aade01e709c9e970}\index{global\_defs.h@{global\_defs.h}!bufferIndex\_dist@{bufferIndex\_dist}}
+\index{bufferIndex\_dist@{bufferIndex\_dist}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{bufferIndex\_dist}{bufferIndex\_dist}}
+{\footnotesize\ttfamily \label{global__defs_8h_ada7390ca89a3a685aade01e709c9e970} 
+volatile int buffer\+Index\+\_\+dist\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Distance buffer write index. 
+
+\Hypertarget{global__defs_8h_a153060430d519f35d65d750aed7718e6}\index{global\_defs.h@{global\_defs.h}!bufferIndex\_sound@{bufferIndex\_sound}}
+\index{bufferIndex\_sound@{bufferIndex\_sound}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{bufferIndex\_sound}{bufferIndex\_sound}}
+{\footnotesize\ttfamily \label{global__defs_8h_a153060430d519f35d65d750aed7718e6} 
+volatile int buffer\+Index\+\_\+sound\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Sound buffer write index. 
+
+\Hypertarget{global__defs_8h_a4adb49baac164d761359c1af0d2c2bb2}\index{global\_defs.h@{global\_defs.h}!BUTTON\_PIN@{BUTTON\_PIN}}
+\index{BUTTON\_PIN@{BUTTON\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{BUTTON\_PIN}{BUTTON\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_a4adb49baac164d761359c1af0d2c2bb2} 
+const int BUTTON\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Manual servo lock/unlock button. 
+
+\Hypertarget{global__defs_8h_a5554694551ee136cf28fefadeccb86f7}\index{global\_defs.h@{global\_defs.h}!buttonState@{buttonState}}
+\index{buttonState@{buttonState}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{buttonState}{buttonState}}
+{\footnotesize\ttfamily \label{global__defs_8h_a5554694551ee136cf28fefadeccb86f7} 
+bool button\+State\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Debounced button state. 
+
+\Hypertarget{global__defs_8h_abae73da6a21c890181aeea556b060ccb}\index{global\_defs.h@{global\_defs.h}!close\_dist@{close\_dist}}
+\index{close\_dist@{close\_dist}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{close\_dist}{close\_dist}}
+{\footnotesize\ttfamily \label{global__defs_8h_abae73da6a21c890181aeea556b060ccb} 
+volatile bool close\+\_\+dist\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Proximity state flag (true if close) 
+
+\Hypertarget{global__defs_8h_a7d466b68c5e24096e6bcd063f3ab8736}\index{global\_defs.h@{global\_defs.h}!debounceDelay@{debounceDelay}}
+\index{debounceDelay@{debounceDelay}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{debounceDelay}{debounceDelay}}
+{\footnotesize\ttfamily \label{global__defs_8h_a7d466b68c5e24096e6bcd063f3ab8736} 
+const unsigned long debounce\+Delay\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Debounce duration in milliseconds. 
+
+\Hypertarget{global__defs_8h_a7243f265e5b2326dea09eda1614f0756}\index{global\_defs.h@{global\_defs.h}!distanceBuffer@{distanceBuffer}}
+\index{distanceBuffer@{distanceBuffer}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{distanceBuffer}{distanceBuffer}}
+{\footnotesize\ttfamily \label{global__defs_8h_a7243f265e5b2326dea09eda1614f0756} 
+float distance\+Buffer\mbox{[}5\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Circular buffer for distance measurements. 
+
+\Hypertarget{global__defs_8h_a4bc4af77eef66fe889ba51f013f5626b}\index{global\_defs.h@{global\_defs.h}!echo\_end\_us@{echo\_end\_us}}
+\index{echo\_end\_us@{echo\_end\_us}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{echo\_end\_us}{echo\_end\_us}}
+{\footnotesize\ttfamily \label{global__defs_8h_a4bc4af77eef66fe889ba51f013f5626b} 
+volatile uint64\+\_\+t echo\+\_\+end\+\_\+us\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Echo pulse end time (μs) 
+
+\Hypertarget{global__defs_8h_a7a38f8fe2250c2011a6a8c7d13c66ca7}\index{global\_defs.h@{global\_defs.h}!ECHO\_PIN@{ECHO\_PIN}}
+\index{ECHO\_PIN@{ECHO\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{ECHO\_PIN}{ECHO\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_a7a38f8fe2250c2011a6a8c7d13c66ca7} 
+const int ECHO\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Echo pin for ultrasonic distance sensor. 
+
+\Hypertarget{global__defs_8h_aa6dfcece01eb915318b3814c9de4ab06}\index{global\_defs.h@{global\_defs.h}!echo\_start\_us@{echo\_start\_us}}
+\index{echo\_start\_us@{echo\_start\_us}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{echo\_start\_us}{echo\_start\_us}}
+{\footnotesize\ttfamily \label{global__defs_8h_aa6dfcece01eb915318b3814c9de4ab06} 
+volatile uint64\+\_\+t echo\+\_\+start\+\_\+us\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Echo pulse start time (μs) 
+
+\Hypertarget{global__defs_8h_a053c06a507276ec243ee301bdfb284a9}\index{global\_defs.h@{global\_defs.h}!i2c\_semaphore@{i2c\_semaphore}}
+\index{i2c\_semaphore@{i2c\_semaphore}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{i2c\_semaphore}{i2c\_semaphore}}
+{\footnotesize\ttfamily \label{global__defs_8h_a053c06a507276ec243ee301bdfb284a9} 
+Semaphore\+Handle\+\_\+t i2c\+\_\+semaphore\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Semaphore to manage I2C bus access. 
+
+\Hypertarget{global__defs_8h_a3bd90c0cc06e6865ed6292b51c0e99e4}\index{global\_defs.h@{global\_defs.h}!idx\_dist@{idx\_dist}}
+\index{idx\_dist@{idx\_dist}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{idx\_dist}{idx\_dist}}
+{\footnotesize\ttfamily \label{global__defs_8h_a3bd90c0cc06e6865ed6292b51c0e99e4} 
+volatile int idx\+\_\+dist\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Read index for distance processing. 
+
+\Hypertarget{global__defs_8h_ad21b88565fd6af381b783ac46e03e57c}\index{global\_defs.h@{global\_defs.h}!idx\_motion@{idx\_motion}}
+\index{idx\_motion@{idx\_motion}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{idx\_motion}{idx\_motion}}
+{\footnotesize\ttfamily \label{global__defs_8h_ad21b88565fd6af381b783ac46e03e57c} 
+volatile int idx\+\_\+motion\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Read index for motion processing. 
+
+\Hypertarget{global__defs_8h_a78b536c62aeaf86c6adc9384fa185bca}\index{global\_defs.h@{global\_defs.h}!IRQ\_PIN@{IRQ\_PIN}}
+\index{IRQ\_PIN@{IRQ\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{IRQ\_PIN}{IRQ\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_a78b536c62aeaf86c6adc9384fa185bca} 
+const int IRQ\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+RFID interrupt pin (not used, but defined if needed) 
+
+\Hypertarget{global__defs_8h_acd0fef286013edfa4ecbba7a57b66dad}\index{global\_defs.h@{global\_defs.h}!isLock@{isLock}}
+\index{isLock@{isLock}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{isLock}{isLock}}
+{\footnotesize\ttfamily \label{global__defs_8h_acd0fef286013edfa4ecbba7a57b66dad} 
+volatile bool is\+Lock\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Lock state flag (true if locked) 
+
+\Hypertarget{global__defs_8h_a31c00481d2a709bb2873743c3b1a5cb5}\index{global\_defs.h@{global\_defs.h}!lastButtonReading@{lastButtonReading}}
+\index{lastButtonReading@{lastButtonReading}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{lastButtonReading}{lastButtonReading}}
+{\footnotesize\ttfamily \label{global__defs_8h_a31c00481d2a709bb2873743c3b1a5cb5} 
+bool last\+Button\+Reading\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Previous raw reading of button. 
+
+\Hypertarget{global__defs_8h_a025a85b33749fd5dde5cb7edd7aea941}\index{global\_defs.h@{global\_defs.h}!lastDebounceTime@{lastDebounceTime}}
+\index{lastDebounceTime@{lastDebounceTime}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{lastDebounceTime}{lastDebounceTime}}
+{\footnotesize\ttfamily \label{global__defs_8h_a025a85b33749fd5dde5cb7edd7aea941} 
+unsigned long last\+Debounce\+Time\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Time of last button state change. 
+
+\Hypertarget{global__defs_8h_a0b3886fc5d22cd9c3db5f0da7b01a2ce}\index{global\_defs.h@{global\_defs.h}!lcd@{lcd}}
+\index{lcd@{lcd}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{lcd}{lcd}}
+{\footnotesize\ttfamily \label{global__defs_8h_a0b3886fc5d22cd9c3db5f0da7b01a2ce} 
+Liquid\+Crystal\+\_\+\+I2C lcd\hspace{0.3cm}{\ttfamily [extern]}}
+
+\Hypertarget{global__defs_8h_a734029c5fc6508cd75bf19cd7f52b66d}\index{global\_defs.h@{global\_defs.h}!LED@{LED}}
+\index{LED@{LED}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{LED}{LED}}
+{\footnotesize\ttfamily \label{global__defs_8h_a734029c5fc6508cd75bf19cd7f52b66d} 
+const int LED\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+On-\/board LED pin. 
+
+\Hypertarget{global__defs_8h_aeb7f8fa8c8cd97a8128ca91b8841e5ea}\index{global\_defs.h@{global\_defs.h}!lockTimer@{lockTimer}}
+\index{lockTimer@{lockTimer}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{lockTimer}{lockTimer}}
+{\footnotesize\ttfamily \label{global__defs_8h_aeb7f8fa8c8cd97a8128ca91b8841e5ea} 
+esp\+\_\+timer\+\_\+handle\+\_\+t lock\+Timer\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Timer for lock reset after granted access. 
+
+\Hypertarget{global__defs_8h_a28968e484677c283dc1c5339e5e60421}\index{global\_defs.h@{global\_defs.h}!MISO\_PIN@{MISO\_PIN}}
+\index{MISO\_PIN@{MISO\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{MISO\_PIN}{MISO\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_a28968e484677c283dc1c5339e5e60421} 
+const int MISO\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+SPI MISO pin. 
+
+\Hypertarget{global__defs_8h_ae292b4bb0383ed60bcf040f0f1c1fd61}\index{global\_defs.h@{global\_defs.h}!MOSI\_PIN@{MOSI\_PIN}}
+\index{MOSI\_PIN@{MOSI\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{MOSI\_PIN}{MOSI\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_ae292b4bb0383ed60bcf040f0f1c1fd61} 
+const int MOSI\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+SPI MOSI pin. 
+
+\Hypertarget{global__defs_8h_abd70e7476ee48b5662e7ab00b6b4bc01}\index{global\_defs.h@{global\_defs.h}!motion\_detected@{motion\_detected}}
+\index{motion\_detected@{motion\_detected}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{motion\_detected}{motion\_detected}}
+{\footnotesize\ttfamily \label{global__defs_8h_abd70e7476ee48b5662e7ab00b6b4bc01} 
+volatile bool motion\+\_\+detected\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Motion state flag (true if detected) 
+
+\Hypertarget{global__defs_8h_a9c742658e2073d4dc1d9b492cf0de6eb}\index{global\_defs.h@{global\_defs.h}!motionBuffer@{motionBuffer}}
+\index{motionBuffer@{motionBuffer}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{motionBuffer}{motionBuffer}}
+{\footnotesize\ttfamily \label{global__defs_8h_a9c742658e2073d4dc1d9b492cf0de6eb} 
+int motion\+Buffer\mbox{[}5\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Circular buffer for motion readings. 
+
+\Hypertarget{global__defs_8h_ab7eaefeafe574cbf45415789bf672403}\index{global\_defs.h@{global\_defs.h}!myservo@{myservo}}
+\index{myservo@{myservo}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{myservo}{myservo}}
+{\footnotesize\ttfamily \label{global__defs_8h_ab7eaefeafe574cbf45415789bf672403} 
+Servo myservo\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Servo motor instance. 
+
+\Hypertarget{global__defs_8h_a914b0c79284494a5f545381d66afb8f7}\index{global\_defs.h@{global\_defs.h}!numAllowedUIDs@{numAllowedUIDs}}
+\index{numAllowedUIDs@{numAllowedUIDs}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{numAllowedUIDs}{numAllowedUIDs}}
+{\footnotesize\ttfamily \label{global__defs_8h_a914b0c79284494a5f545381d66afb8f7} 
+const int num\+Allowed\+UIDs\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Count of allowed UIDs. 
+
+\Hypertarget{global__defs_8h_a22efb88130cbace44007553eec72a188}\index{global\_defs.h@{global\_defs.h}!PIR\_PIN@{PIR\_PIN}}
+\index{PIR\_PIN@{PIR\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{PIR\_PIN}{PIR\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_a22efb88130cbace44007553eec72a188} 
+const int PIR\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+PIR motion sensor pin. 
+
+\Hypertarget{global__defs_8h_a30fd76f0f4363cddea28599c01378ef3}\index{global\_defs.h@{global\_defs.h}!POT\_PIN@{POT\_PIN}}
+\index{POT\_PIN@{POT\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{POT\_PIN}{POT\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_a30fd76f0f4363cddea28599c01378ef3} 
+const int POT\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+\Hypertarget{global__defs_8h_a3d48b337cfb6e4913f1609f55558732a}\index{global\_defs.h@{global\_defs.h}!rfid@{rfid}}
+\index{rfid@{rfid}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{rfid}{rfid}}
+{\footnotesize\ttfamily \label{global__defs_8h_a3d48b337cfb6e4913f1609f55558732a} 
+MFRC522 rfid\hspace{0.3cm}{\ttfamily [extern]}}
+
+\Hypertarget{global__defs_8h_a815ec01183b60a4ed63828cd1ef54748}\index{global\_defs.h@{global\_defs.h}!rfidQueue@{rfidQueue}}
+\index{rfidQueue@{rfidQueue}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{rfidQueue}{rfidQueue}}
+{\footnotesize\ttfamily \label{global__defs_8h_a815ec01183b60a4ed63828cd1ef54748} 
+Queue\+Handle\+\_\+t rfid\+Queue\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Queue for RFID UID strings. 
+
+\Hypertarget{global__defs_8h_a3ff2e02d6209d87e1e11d2bd43275236}\index{global\_defs.h@{global\_defs.h}!RST\_PIN@{RST\_PIN}}
+\index{RST\_PIN@{RST\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{RST\_PIN}{RST\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_a3ff2e02d6209d87e1e11d2bd43275236} 
+const int RST\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+RFID reset pin. 
+
+\Hypertarget{global__defs_8h_afa042f998806fcdedab1794cebbeaad3}\index{global\_defs.h@{global\_defs.h}!rtc@{rtc}}
+\index{rtc@{rtc}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{rtc}{rtc}}
+{\footnotesize\ttfamily \label{global__defs_8h_afa042f998806fcdedab1794cebbeaad3} 
+RTC\+\_\+\+DS3231 rtc\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Real-\/time clock instance. 
+
+\Hypertarget{global__defs_8h_ade4ce3492653f530431c3aa6f3b73ed1}\index{global\_defs.h@{global\_defs.h}!SCK\_PIN@{SCK\_PIN}}
+\index{SCK\_PIN@{SCK\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{SCK\_PIN}{SCK\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_ade4ce3492653f530431c3aa6f3b73ed1} 
+const int SCK\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+SPI clock pin. 
+
+\Hypertarget{global__defs_8h_a6fa077bdb86507b0c98cd47b0e0989b4}\index{global\_defs.h@{global\_defs.h}!SCL\_PIN@{SCL\_PIN}}
+\index{SCL\_PIN@{SCL\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{SCL\_PIN}{SCL\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_a6fa077bdb86507b0c98cd47b0e0989b4} 
+const int SCL\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+I2C SCL line. 
+
+\Hypertarget{global__defs_8h_a8880a210d3d7b654ed6095612f350147}\index{global\_defs.h@{global\_defs.h}!SDA\_PIN@{SDA\_PIN}}
+\index{SDA\_PIN@{SDA\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{SDA\_PIN}{SDA\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_a8880a210d3d7b654ed6095612f350147} 
+const int SDA\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+I2C SDA line. 
+
+\Hypertarget{global__defs_8h_ac6b1fae2430dc808236d5f86df609c56}\index{global\_defs.h@{global\_defs.h}!sensorQueue@{sensorQueue}}
+\index{sensorQueue@{sensorQueue}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{sensorQueue}{sensorQueue}}
+{\footnotesize\ttfamily \label{global__defs_8h_ac6b1fae2430dc808236d5f86df609c56} 
+Queue\+Handle\+\_\+t sensor\+Queue\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Queue for \doxylink{structsensor_data__t}{sensor\+Data\+\_\+t} structs. 
+
+\Hypertarget{global__defs_8h_a93a85a5200e90faaef61f936275f9e39}\index{global\_defs.h@{global\_defs.h}!SERVO\_PIN@{SERVO\_PIN}}
+\index{SERVO\_PIN@{SERVO\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{SERVO\_PIN}{SERVO\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_a93a85a5200e90faaef61f936275f9e39} 
+const int SERVO\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Servo motor control pin. 
+
+\Hypertarget{global__defs_8h_a5c8221e125b450af1faf364d9d3d0601}\index{global\_defs.h@{global\_defs.h}!SOUND\_SPEED\_CM\_PER\_US@{SOUND\_SPEED\_CM\_PER\_US}}
+\index{SOUND\_SPEED\_CM\_PER\_US@{SOUND\_SPEED\_CM\_PER\_US}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{SOUND\_SPEED\_CM\_PER\_US}{SOUND\_SPEED\_CM\_PER\_US}}
+{\footnotesize\ttfamily \label{global__defs_8h_a5c8221e125b450af1faf364d9d3d0601} 
+const float SOUND\+\_\+\+SPEED\+\_\+\+CM\+\_\+\+PER\+\_\+\+US\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Speed of sound in cm/μs. 
+
+\Hypertarget{global__defs_8h_a67257d53cf891973c2845a899eeaef7d}\index{global\_defs.h@{global\_defs.h}!SS\_PIN@{SS\_PIN}}
+\index{SS\_PIN@{SS\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{SS\_PIN}{SS\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_a67257d53cf891973c2845a899eeaef7d} 
+const int SS\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+RFID slave select. 
+
+\Hypertarget{global__defs_8h_a4080e16b635b2c3a63fb21ff5a127316}\index{global\_defs.h@{global\_defs.h}!TaskLCD\_Handle@{TaskLCD\_Handle}}
+\index{TaskLCD\_Handle@{TaskLCD\_Handle}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{TaskLCD\_Handle}{TaskLCD\_Handle}}
+{\footnotesize\ttfamily \label{global__defs_8h_a4080e16b635b2c3a63fb21ff5a127316} 
+Task\+Handle\+\_\+t Task\+LCD\+\_\+\+Handle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+LCD display update task. 
+
+\Hypertarget{global__defs_8h_a441cd3d104a596813a403100482c451f}\index{global\_defs.h@{global\_defs.h}!TaskLED\_Handle@{TaskLED\_Handle}}
+\index{TaskLED\_Handle@{TaskLED\_Handle}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{TaskLED\_Handle}{TaskLED\_Handle}}
+{\footnotesize\ttfamily \label{global__defs_8h_a441cd3d104a596813a403100482c451f} 
+Task\+Handle\+\_\+t Task\+LED\+\_\+\+Handle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+LED blinking task. 
+
+\Hypertarget{global__defs_8h_a18c2fed31b163e64f1f283aba1f510e0}\index{global\_defs.h@{global\_defs.h}!TaskMotion\_Handle@{TaskMotion\_Handle}}
+\index{TaskMotion\_Handle@{TaskMotion\_Handle}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{TaskMotion\_Handle}{TaskMotion\_Handle}}
+{\footnotesize\ttfamily \label{global__defs_8h_a18c2fed31b163e64f1f283aba1f510e0} 
+Task\+Handle\+\_\+t Task\+Motion\+\_\+\+Handle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+PIR sensor logic task. 
+
+\Hypertarget{global__defs_8h_a75912ff73c3d0a4c832ee9dfbb9eb73f}\index{global\_defs.h@{global\_defs.h}!taskPrinter\_Handle@{taskPrinter\_Handle}}
+\index{taskPrinter\_Handle@{taskPrinter\_Handle}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{taskPrinter\_Handle}{taskPrinter\_Handle}}
+{\footnotesize\ttfamily \label{global__defs_8h_a75912ff73c3d0a4c832ee9dfbb9eb73f} 
+Task\+Handle\+\_\+t task\+Printer\+\_\+\+Handle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+RFID tag validation and access control. 
+
+\Hypertarget{global__defs_8h_a77dceabbd02bc08a87ace2f3b8d161a3}\index{global\_defs.h@{global\_defs.h}!taskRFIDReader\_Handle@{taskRFIDReader\_Handle}}
+\index{taskRFIDReader\_Handle@{taskRFIDReader\_Handle}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{taskRFIDReader\_Handle}{taskRFIDReader\_Handle}}
+{\footnotesize\ttfamily \label{global__defs_8h_a77dceabbd02bc08a87ace2f3b8d161a3} 
+Task\+Handle\+\_\+t task\+RFIDReader\+\_\+\+Handle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+RFID scanning task. 
+
+\Hypertarget{global__defs_8h_a33ea043cc379ef2c0e36e0f9e9559335}\index{global\_defs.h@{global\_defs.h}!taskRTC\_Handle@{taskRTC\_Handle}}
+\index{taskRTC\_Handle@{taskRTC\_Handle}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{taskRTC\_Handle}{taskRTC\_Handle}}
+{\footnotesize\ttfamily \label{global__defs_8h_a33ea043cc379ef2c0e36e0f9e9559335} 
+Task\+Handle\+\_\+t task\+RTC\+\_\+\+Handle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+RTC timestamping task (deprecated) 
+
+\Hypertarget{global__defs_8h_a9206a6b571a3641bdb4fdea09739c7a6}\index{global\_defs.h@{global\_defs.h}!taskSensorProcess\_Handle@{taskSensorProcess\_Handle}}
+\index{taskSensorProcess\_Handle@{taskSensorProcess\_Handle}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{taskSensorProcess\_Handle}{taskSensorProcess\_Handle}}
+{\footnotesize\ttfamily \label{global__defs_8h_a9206a6b571a3641bdb4fdea09739c7a6} 
+Task\+Handle\+\_\+t task\+Sensor\+Process\+\_\+\+Handle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Sensor data processing task. 
+
+\Hypertarget{global__defs_8h_a475755d65e70d4a6a7f2223d2a0d9e3f}\index{global\_defs.h@{global\_defs.h}!taskSensorRead\_Handle@{taskSensorRead\_Handle}}
+\index{taskSensorRead\_Handle@{taskSensorRead\_Handle}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{taskSensorRead\_Handle}{taskSensorRead\_Handle}}
+{\footnotesize\ttfamily \label{global__defs_8h_a475755d65e70d4a6a7f2223d2a0d9e3f} 
+Task\+Handle\+\_\+t task\+Sensor\+Read\+\_\+\+Handle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Unified sensor reading task. 
+
+\Hypertarget{global__defs_8h_a401b14ba5a1ca314c371858b4c0e75d2}\index{global\_defs.h@{global\_defs.h}!TaskServoRun\_Handle@{TaskServoRun\_Handle}}
+\index{TaskServoRun\_Handle@{TaskServoRun\_Handle}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{TaskServoRun\_Handle}{TaskServoRun\_Handle}}
+{\footnotesize\ttfamily \label{global__defs_8h_a401b14ba5a1ca314c371858b4c0e75d2} 
+Task\+Handle\+\_\+t Task\+Servo\+Run\+\_\+\+Handle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Servo motor control task. 
+
+\Hypertarget{global__defs_8h_ad590dea6bfbdef17e61133662d34de1a}\index{global\_defs.h@{global\_defs.h}!TaskSound\_Handle@{TaskSound\_Handle}}
+\index{TaskSound\_Handle@{TaskSound\_Handle}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{TaskSound\_Handle}{TaskSound\_Handle}}
+{\footnotesize\ttfamily \label{global__defs_8h_ad590dea6bfbdef17e61133662d34de1a} 
+Task\+Handle\+\_\+t Task\+Sound\+\_\+\+Handle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Sound detection task. 
+
+\Hypertarget{global__defs_8h_a4cab83ec5008742449ea361a0d26f3d1}\index{global\_defs.h@{global\_defs.h}!TaskUltraSonic\_Handle@{TaskUltraSonic\_Handle}}
+\index{TaskUltraSonic\_Handle@{TaskUltraSonic\_Handle}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{TaskUltraSonic\_Handle}{TaskUltraSonic\_Handle}}
+{\footnotesize\ttfamily \label{global__defs_8h_a4cab83ec5008742449ea361a0d26f3d1} 
+Task\+Handle\+\_\+t Task\+Ultra\+Sonic\+\_\+\+Handle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Ultrasonic distance sensing task (legacy) 
+
+\Hypertarget{global__defs_8h_a722fb5574a3842577bae492875908f78}\index{global\_defs.h@{global\_defs.h}!TaskUpdateButton\_Handle@{TaskUpdateButton\_Handle}}
+\index{TaskUpdateButton\_Handle@{TaskUpdateButton\_Handle}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{TaskUpdateButton\_Handle}{TaskUpdateButton\_Handle}}
+{\footnotesize\ttfamily \label{global__defs_8h_a722fb5574a3842577bae492875908f78} 
+Task\+Handle\+\_\+t Task\+Update\+Button\+\_\+\+Handle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Button debounce and state update task. 
+
+\Hypertarget{global__defs_8h_a4468fd3e9632684e6b1e52f47fe7ca27}\index{global\_defs.h@{global\_defs.h}!TRIG\_PIN@{TRIG\_PIN}}
+\index{TRIG\_PIN@{TRIG\_PIN}!global\_defs.h@{global\_defs.h}}
+\doxysubsubsection{\texorpdfstring{TRIG\_PIN}{TRIG\_PIN}}
+{\footnotesize\ttfamily \label{global__defs_8h_a4468fd3e9632684e6b1e52f47fe7ca27} 
+const int TRIG\+\_\+\+PIN\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Trigger pin for ultrasonic distance sensor. 
+

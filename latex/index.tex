@@ -1,0 +1,14 @@
+\chapter{EE590 Final Project }
+\hypertarget{index}{}\label{index}\index{EE590 Final Project@{EE590 Final Project}}
+This Project implements a Smart Security Door and Monitoring System designed to provide the user with automated access control and intrusion monitoring.
+
+The system utilizes the RC522 RFID module to authenticate users with RFID tags. Upon successful authentication, a servo motor is triggered to unlock the door mechanism via a latch that raises to unlock the door and falls to lock it in place. A Real-\/\+Time Clock (RTC) module logs each access event, allowing for time-\/stamped tracking of entries. This is done via a {\ttfamily Serial Print}.
+
+To enhance security, a Passive Infrared (PIR) sensor monitors motion near the door. If motion is detected without a corresponding unlock event, it flags potential unauthorized access. An Ultrasonic sensor further strengthens the intrusion detection by monitoring the proximity of the potential intruder.
+
+The backlight of the LCD flickers on depending on the values measured by the PIR and Ultrasonic Sensor. This event is logged using the time provided by the RTC. A timer is also started. If the values of the PIR or the Ultrasonic sensor correspond to a person close to the door by the time the timer is up, the timer resets and the LED Flickers on again. If not, the LCD backlight switches off. An ESP32 microcontroller serves as the system\textquotesingle{}s central controller, managing sensor data, actuator control, and task scheduling using Free\+RTOS queues. Instead of the second ESP32, we used the dual-\/core functionality of the ESP32 to provide parallel control for the sensors and the actuators.
+
+This project demonstrates real-\/time control, reliable sensor interfacing, and dual-\/core embedded programming principles.\hypertarget{index_author}{}\doxysection{\texorpdfstring{Author}{Author}}\label{index_author}
+Sai Jayanth Kalisi, 2025 ~\newline
+ Sanjay Varghese, 2025 ~\newline
+ Ankit Telluri, 2025 

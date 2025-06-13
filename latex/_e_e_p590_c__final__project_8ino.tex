@@ -1,0 +1,66 @@
+\doxysection{EEP590\+C\+\_\+final\+\_\+project.\+ino File Reference}
+\hypertarget{_e_e_p590_c__final__project_8ino}{}\label{_e_e_p590_c__final__project_8ino}\index{EEP590C\_final\_project.ino@{EEP590C\_final\_project.ino}}
+
+
+Free\+RTOS-\/based Light Monitoring and Anomaly Detection System using ESP32.  
+
+
+{\ttfamily \#include $<$freertos/\+Free\+RTOS.\+h$>$}\newline
+{\ttfamily \#include $<$freertos/task.\+h$>$}\newline
+{\ttfamily \#include $<$Wire.\+h$>$}\newline
+{\ttfamily \#include $<$ESP32\+Servo.\+h$>$}\newline
+{\ttfamily \#include $<$Liquid\+Crystal\+\_\+\+I2\+C.\+h$>$}\newline
+{\ttfamily \#include "{}global\+\_\+defs.\+h"{}}\newline
+{\ttfamily \#include "{}core0.\+h"{}}\newline
+{\ttfamily \#include "{}core1.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{_e_e_p590_c__final__project_8ino_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\begin{DoxyCompactList}\small\item\em Arduino setup function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_e_e_p590_c__final__project_8ino_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\begin{DoxyCompactList}\small\item\em Main loop (unused) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Free\+RTOS-\/based Light Monitoring and Anomaly Detection System using ESP32. 
+
+\hypertarget{_e_e_p590_c__final__project_8ino_overview}{}\doxysubsection{\texorpdfstring{Overview}{Overview}}\label{_e_e_p590_c__final__project_8ino_overview}
+This sketch sets up all system resources and tasks needed for a smart security and monitoring system implemented on ESP32. It includes I2C, RFID, servo control, LCD display, RTC setup, and Free\+RTOS-\/based task management. Timers and semaphores are used to coordinate access to shared resources.\hypertarget{index_author}{}\doxysubsection{\texorpdfstring{Author}{Author}}\label{index_author}
+Created by Sai Jayanth Kalisi, 2025 ~\newline
+ Additionally modified by Sanjay Varghese, 2025 ~\newline
+ Additionally modified by Ankit Telluri, 2025 
+
+\label{doc-func-members}
+\Hypertarget{_e_e_p590_c__final__project_8ino_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{_e_e_p590_c__final__project_8ino_afe461d27b9c48d5921c00d521181f12f}\index{EEP590C\_final\_project.ino@{EEP590C\_final\_project.ino}!loop@{loop}}
+\index{loop@{loop}!EEP590C\_final\_project.ino@{EEP590C\_final\_project.ino}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily \label{_e_e_p590_c__final__project_8ino_afe461d27b9c48d5921c00d521181f12f} 
+void loop (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Main loop (unused) 
+
+Main loop is intentionally left empty. All execution is performed using Free\+RTOS tasks.
+
+\begin{DoxyNote}{Note}
+Name\+: Loop 
+\end{DoxyNote}
+\Hypertarget{_e_e_p590_c__final__project_8ino_a4fc01d736fe50cf5b977f755b675f11d}\index{EEP590C\_final\_project.ino@{EEP590C\_final\_project.ino}!setup@{setup}}
+\index{setup@{setup}!EEP590C\_final\_project.ino@{EEP590C\_final\_project.ino}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily \label{_e_e_p590_c__final__project_8ino_a4fc01d736fe50cf5b977f755b675f11d} 
+void setup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Arduino setup function. 
+
+Initializes peripherals (pins, serial, servo, LCD, RTC), creates RTOS queues and tasks, sets up timers and interrupts, and initializes I2C and SPI interfaces.
+
+\begin{DoxyNote}{Note}
+Name\+: setup 
+\end{DoxyNote}

@@ -1,0 +1,33 @@
+\doxysection{core0.\+h}
+\hypertarget{core0_8h_source}{}\label{core0_8h_source}\mbox{\hyperlink{core0_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#ifndef\ CORE0\_H}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ CORE0\_H}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <Arduino.h>}\ }
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ <ESP32Servo.h>}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#include\ <LiquidCrystal\_I2C.h>}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ "{}driver/timer.h"{}}-\/}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ "{}esp\_timer.h"{}}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{extern}\ portMUX\_TYPE\ \mbox{\hyperlink{core0_8cpp_adedb0f4641b7b425776dbacb23a96576}{timerMux}};\ }
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{comment}{//=======================\ TASK\ PROTOTYPES\ =======================//}}
+\DoxyCodeLine{00040\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{core0_8h_a17947122ee84a3b76c97fb62295f5010}{updateButtonTask}}(\textcolor{keywordtype}{void}*\ arg);}
+\DoxyCodeLine{00041\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{core0_8h_ac9539d9a657bbd5c003f8aebaba89b85}{ServoRunTask}}(\textcolor{keywordtype}{void}*\ arg);}
+\DoxyCodeLine{00042\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{core0_8h_a2dfba64c0e10c52cc495260d5e689e60}{motionTask}}(\textcolor{keywordtype}{void}*\ pvParameters);}
+\DoxyCodeLine{00043\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{core0_8h_abf8c64acbfb49e561de9767109698eae}{LCDTask}}(\textcolor{keywordtype}{void}*\ arg);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{comment}{//=======================\ TIMER\ ISR\ PROTOTYPES\ =======================//}}
+\DoxyCodeLine{00046\ \textcolor{keywordtype}{void}\ IRAM\_ATTR\ \mbox{\hyperlink{core0_8h_a4ca381f4aa00047d552c8f05c2638cbe}{onLockTimer}}(\textcolor{keywordtype}{void}*\ arg);}
+\DoxyCodeLine{00047\ \textcolor{keywordtype}{void}\ IRAM\_ATTR\ \mbox{\hyperlink{core0_8h_a239adce627d777c7b0d7b0378535c068}{onBacklightTimer}}(\textcolor{keywordtype}{void}*\ arg);}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

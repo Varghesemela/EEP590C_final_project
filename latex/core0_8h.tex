@@ -1,0 +1,149 @@
+\doxysection{core0.\+h File Reference}
+\hypertarget{core0_8h}{}\label{core0_8h}\index{core0.h@{core0.h}}
+
+
+Header file for Core 0 tasks in the ESP32 Smart Security System (EE590 Final Project)  
+
+
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$ESP32\+Servo.\+h$>$}\newline
+{\ttfamily \#include $<$Liquid\+Crystal\+\_\+\+I2\+C.\+h$>$}\newline
+{\ttfamily \#include "{}driver/timer.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+timer.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{core0_8h_a17947122ee84a3b76c97fb62295f5010}{update\+Button\+Task}} (void \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em (Deprecated) Debounced button monitor for lock toggle \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{core0_8h_ac9539d9a657bbd5c003f8aebaba89b85}{Servo\+Run\+Task}} (void \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em Servo motor controller for lock mechanism. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{core0_8h_a2dfba64c0e10c52cc495260d5e689e60}{motion\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em (Deprecated) PIR motion sampling and backlight trigger task \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{core0_8h_abf8c64acbfb49e561de9767109698eae}{LCDTask}} (void \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em LCD display manager for lock and detection state. \end{DoxyCompactList}\item 
+void IRAM\+\_\+\+ATTR \mbox{\hyperlink{core0_8h_a4ca381f4aa00047d552c8f05c2638cbe}{on\+Lock\+Timer}} (void \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em ISR for lock timer expiration. \end{DoxyCompactList}\item 
+void IRAM\+\_\+\+ATTR \mbox{\hyperlink{core0_8h_a239adce627d777c7b0d7b0378535c068}{on\+Backlight\+Timer}} (void \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em ISR for LCD backlight timeout. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+port\+MUX\+\_\+\+TYPE \mbox{\hyperlink{core0_8h_adedb0f4641b7b425776dbacb23a96576}{timer\+Mux}}
+\begin{DoxyCompactList}\small\item\em Mux for critical section control during ISR access (used in timers) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header file for Core 0 tasks in the ESP32 Smart Security System (EE590 Final Project) 
+
+This header defines constants, macros, and function prototypes used for managing Free\+RTOS tasks running on Core 0 of the ESP32. It supports control over peripherals such as the LCD display and servo motor, as well as synchronization primitives, interrupts, and software timers.
+
+Tasks declared here handle button interaction, servo motor control, and LCD output. Low-\/level LCD I²C macros are provided to simplify bitwise control of the LCD module.\hypertarget{core0_8h_hardware}{}\doxysubsection{\texorpdfstring{Hardware Setup}{Hardware Setup}}\label{core0_8h_hardware}
+
+\begin{DoxyItemize}
+\item {\bfseries{LCD I2C Address}}\+: {\ttfamily 0x27} (connected via SDA = GPIO8, SCL = GPIO9)
+\item {\bfseries{LCD Control Bits}}\+: BACKLIGHT, ENABLE, RS, etc., defined for raw I²C access
+\end{DoxyItemize}\hypertarget{index_author}{}\doxysubsection{\texorpdfstring{Author}{Author}}\label{index_author}
+Created by Sanjay Varghese, 2025 ~\newline
+ Additionally modified by Sai Jayanth Kalisi, 2025 ~\newline
+ Additionally modified by Ankit Telluri, 2025 
+
+\label{doc-func-members}
+\Hypertarget{core0_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{core0_8h_abf8c64acbfb49e561de9767109698eae}\index{core0.h@{core0.h}!LCDTask@{LCDTask}}
+\index{LCDTask@{LCDTask}!core0.h@{core0.h}}
+\doxysubsubsection{\texorpdfstring{LCDTask()}{LCDTask()}}
+{\footnotesize\ttfamily \label{core0_8h_abf8c64acbfb49e561de9767109698eae} 
+void LCDTask (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+
+
+LCD display manager for lock and detection state. 
+
+Updates LCD lines if state changes. Manages backlight state. Synchronizes I2C access using semaphore. \begin{DoxyNote}{Note}
+Name\+: LCDTask 
+\end{DoxyNote}
+\Hypertarget{core0_8h_a2dfba64c0e10c52cc495260d5e689e60}\index{core0.h@{core0.h}!motionTask@{motionTask}}
+\index{motionTask@{motionTask}!core0.h@{core0.h}}
+\doxysubsubsection{\texorpdfstring{motionTask()}{motionTask()}}
+{\footnotesize\ttfamily \label{core0_8h_a2dfba64c0e10c52cc495260d5e689e60} 
+void motion\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+(Deprecated) PIR motion sampling and backlight trigger task 
+
+Samples PIR readings into a buffer and triggers LCD backlight timer. Logs activity timestamp via RTC. \begin{DoxyNote}{Note}
+Name\+: motion\+Task 
+\end{DoxyNote}
+\Hypertarget{core0_8h_a239adce627d777c7b0d7b0378535c068}\index{core0.h@{core0.h}!onBacklightTimer@{onBacklightTimer}}
+\index{onBacklightTimer@{onBacklightTimer}!core0.h@{core0.h}}
+\doxysubsubsection{\texorpdfstring{onBacklightTimer()}{onBacklightTimer()}}
+{\footnotesize\ttfamily \label{core0_8h_a239adce627d777c7b0d7b0378535c068} 
+void IRAM\+\_\+\+ATTR on\+Backlight\+Timer (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+
+
+ISR for LCD backlight timeout. 
+
+Turns off the backlight flag when the timer expires. \begin{DoxyNote}{Note}
+Name\+: on\+Backlight\+Timer 
+\end{DoxyNote}
+\Hypertarget{core0_8h_a4ca381f4aa00047d552c8f05c2638cbe}\index{core0.h@{core0.h}!onLockTimer@{onLockTimer}}
+\index{onLockTimer@{onLockTimer}!core0.h@{core0.h}}
+\doxysubsubsection{\texorpdfstring{onLockTimer()}{onLockTimer()}}
+{\footnotesize\ttfamily \label{core0_8h_a4ca381f4aa00047d552c8f05c2638cbe} 
+void IRAM\+\_\+\+ATTR on\+Lock\+Timer (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+
+
+ISR for lock timer expiration. 
+
+Notifies the servo task to engage the lock. Runs in critical section. \begin{DoxyNote}{Note}
+Name\+: on\+Lock\+Timer 
+\end{DoxyNote}
+\Hypertarget{core0_8h_ac9539d9a657bbd5c003f8aebaba89b85}\index{core0.h@{core0.h}!ServoRunTask@{ServoRunTask}}
+\index{ServoRunTask@{ServoRunTask}!core0.h@{core0.h}}
+\doxysubsubsection{\texorpdfstring{ServoRunTask()}{ServoRunTask()}}
+{\footnotesize\ttfamily \label{core0_8h_ac9539d9a657bbd5c003f8aebaba89b85} 
+void Servo\+Run\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+
+
+Servo motor controller for lock mechanism. 
+
+Waits on notification to engage/disengage lock and logs timestamp. Uses I2C to read RTC and control PWM via ESP32\+Servo. \begin{DoxyNote}{Note}
+Name\+: Servo\+Run\+Task 
+\end{DoxyNote}
+\Hypertarget{core0_8h_a17947122ee84a3b76c97fb62295f5010}\index{core0.h@{core0.h}!updateButtonTask@{updateButtonTask}}
+\index{updateButtonTask@{updateButtonTask}!core0.h@{core0.h}}
+\doxysubsubsection{\texorpdfstring{updateButtonTask()}{updateButtonTask()}}
+{\footnotesize\ttfamily \label{core0_8h_a17947122ee84a3b76c97fb62295f5010} 
+void update\+Button\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+
+
+(Deprecated) Debounced button monitor for lock toggle 
+
+Reads a button pin, and if a rising edge is detected, it toggles the lock state and notifies the servo task. \begin{DoxyNote}{Note}
+Name\+: update\+Button\+Task 
+\end{DoxyNote}
+
+
+\label{doc-var-members}
+\Hypertarget{core0_8h_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{core0_8h_adedb0f4641b7b425776dbacb23a96576}\index{core0.h@{core0.h}!timerMux@{timerMux}}
+\index{timerMux@{timerMux}!core0.h@{core0.h}}
+\doxysubsubsection{\texorpdfstring{timerMux}{timerMux}}
+{\footnotesize\ttfamily \label{core0_8h_adedb0f4641b7b425776dbacb23a96576} 
+port\+MUX\+\_\+\+TYPE timer\+Mux\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Mux for critical section control during ISR access (used in timers) 
+

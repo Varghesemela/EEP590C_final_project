@@ -1,93 +1,134 @@
-#include <Arduino.h>
+/**
+ * @file core1.cpp
+ * @brief FreeRTOS task implementations for Core 1 of the Smart Security Door System.
+ *
+ * @details
+ * This file defines and implements all Core 1 tasks that handle sensor reading,
+ * proximity/motion detection, RFID tag reading, and access control logic.
+ * It operates as part of a dual-core system on the ESP32 microcontroller.
+ *
+ * Core responsibilities:
+ * - **sensorReadTask**: Collects ultrasonic and PIR sensor data at 50Hz and sends it via queue.
+ * - **sensorProcessTask**: Aggregates sensor readings into buffers, determines detection events, and handles the backlight.
+ * - **taskRFIDReader**: Reads RFID tag UIDs and passes them into a queue for validation.
+ * - **taskPrinter**: Validates UID access, logs attempts, controls lock state, and manages LCD backlight timers.
+ * - **distanceTask**: (Debug) Continuously samples Ultrasonic sensor data and triggers UI updates and timers.
+ * 
+ * @section Features
+ * - Real-time sensor polling with timing guarantees using `vTaskDelayUntil`.
+ * - Queue-based communication between reader and processor tasks.
+ * - Uses ESP32's `esp_timer` library for one-shot timers to control lock duration and backlight timeout.
+ * - Incorporates I²C semaphore protection for safe RTC access.
+ *
+ * @section Authors
+ * Created by Sanjay Varghese, 2025  
+ * Additionally modified by Sai Jayanth Kalisi, 2025  
+ * Additionally modified by Ankit Telluri, 2025
+ */
 
+#include <Arduino.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string>
-
 #include "core1.h"
 #include "global_defs.h"
 
 //========= TASKS =========
 
-// void distanceTask(void* pvParameters) {
-//   while (1) {
-//     // 1) Trigger pulse (HIGH for 10 µs):
-//     digitalWrite(TRIG_PIN, LOW);
-//     delayMicroseconds(2);
-//     digitalWrite(TRIG_PIN, HIGH);
-//     delayMicroseconds(10);
-//     digitalWrite(TRIG_PIN, LOW);
+/**
+ * @brief (Deprecated) Reads ultrasonic distance values in a blocking loop.
+ *        Stores results into a circular buffer and manages backlight logic.
+ *        Replaced by non-blocking sensorReadTask and sensorProcessTask.
+ */
+void distanceTask(void* pvParameters) {
+  // while (1) {
+  //   // 1) Trigger pulse (HIGH for 10 µs):
+  //   digitalWrite(TRIG_PIN, LOW);
+  //   delayMicroseconds(2);
+  //   digitalWrite(TRIG_PIN, HIGH);
+  //   delayMicroseconds(10);
+  //   digitalWrite(TRIG_PIN, LOW);
 
-//     // 2) Read echo pulse width (blocking). Max timeout = 38 000 µs (~6.5 m)
-//     unsigned long duration = pulseIn(ECHO_PIN, HIGH, 38000UL);
+  //   // 2) Read echo pulse width (blocking). Max timeout = 38 000 µs (~6.5 m)
+  //   unsigned long duration = pulseIn(ECHO_PIN, HIGH, 38000UL);
 
-//     // If no echo was received within timeout, duration = 0:
-//     float distanceCm = 0.0f;
-//     // Serial.println(duration);
-//     if (duration > 0) {
-//       // 3) Convert to distance in cm: (pulse_time µs) × (speed_cm/µs) ÷ 2
-//       distanceCm = (duration * SOUND_SPEED_CM_PER_US) / 2.0f;
-//     }
+  //   // If no echo was received within timeout, duration = 0:
+  //   float distanceCm = 0.0f;
+  //   // Serial.println(duration);
+  //   if (duration > 0) {
+  //     // 3) Convert to distance in cm: (pulse_time µs) × (speed_cm/µs) ÷ 2
+  //     distanceCm = (duration * SOUND_SPEED_CM_PER_US) / 2.0f;
+  //   }
 
-//     // 4) Store in circular buffer:
-//     distanceBuffer[bufferIndex_dist] = distanceCm;
-//     bufferIndex_dist = (bufferIndex_dist + 1) % 5;
+  //   // 4) Store in circular buffer:
+  //   distanceBuffer[bufferIndex_dist] = distanceCm;
+  //   bufferIndex_dist = (bufferIndex_dist + 1) % 5;
 
-//     // 5) Print the most recent reading:
-//     // Serial.print("Newest distance: ");
-//     // Serial.print(distanceCm, 2);
-//     // Serial.println(distanceCm < 130 ? "CLOSE" : "far");
-//     // Serial.print(" cm   [Next write index = ");
-//     // Serial.print(bufferIndex_dist);
-//     // Serial.println("]");
+  //   // 5) Print the most recent reading:
+  //   // Serial.print("Newest distance: ");
+  //   // Serial.print(distanceCm, 2);
+  //   // Serial.println(distanceCm < 130 ? "CLOSE" : "far");
+  //   // Serial.print(" cm   [Next write index = ");
+  //   // Serial.print(bufferIndex_dist);
+  //   // Serial.println("]");
 
-//     // 6) Print out the entire buffer contents (indices 0–4):
+  //   // 6) Print out the entire buffer contents (indices 0–4):
 
-//     int sum = 0;
+  //   int sum = 0;
 
-//     // Serial.print("Buffer contents: [");
-//     for (int i = 0; i < 5; i++) {
-//       // Serial.print(distanceBuffer[i], 2);
-//       // if (i < 4) {
-//       // Serial.print(", ");
-//       // }
-//       sum += distanceBuffer[i];
-//     }
+  //   // Serial.print("Buffer contents: [");
+  //   for (int i = 0; i < 5; i++) {
+  //     // Serial.print(distanceBuffer[i], 2);
+  //     // if (i < 4) {
+  //     // Serial.print(", ");
+  //     // }
+  //     sum += distanceBuffer[i];
+  //   }
 
-//     if (sum < 90 && sum != 0) {
-//       close_dist = true;
+  //   if (sum < 90 && sum != 0) {
+  //     close_dist = true;
 
-//       // Reset inactivity timer
-//       if (!backlightOn) {
-//         backlightOn = true;
-//         // Serial.println(sum);
-//         if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
-//           DateTime now = rtc.now();
-//           Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
-//           xSemaphoreGive(i2c_semaphore);
-//         } else {
-//           Serial.println("RTC I2C timeout");
-//         }
-//         Serial.println("Backlight ON (proximity)");
+  //     // Reset inactivity timer
+  //     if (!backlightOn) {
+  //       backlightOn = true;
+  //       // Serial.println(sum);
+  //       if (xSemaphoreTake(i2c_semaphore, pdMS_TO_TICKS(50)) == pdTRUE) {
+  //         DateTime now = rtc.now();
+  //         Serial.printf("Time: %02d:%02d:%02d\n", now.hour(), now.minute(), now.second());
+  //         xSemaphoreGive(i2c_semaphore);
+  //       } else {
+  //         Serial.println("RTC I2C timeout");
+  //       }
+  //       Serial.println("Backlight ON (proximity)");
 
-//         esp_timer_stop(backlightTimer);
-//         esp_timer_start_once(backlightTimer, 10000000);  // 10 sec = 10,000,000 us
-//       }
+  //       esp_timer_stop(backlightTimer);
+  //       esp_timer_start_once(backlightTimer, 10000000);  // 10 sec = 10,000,000 us
+  //     }
 
-//       // timerStop(backlightTimer);
-//       // timerWrite(backlightTimer, 0);
-//       // timerStart(backlightTimer);
-//     } else {
-//       close_dist = false;
-//     }
+  //     // timerStop(backlightTimer);
+  //     // timerWrite(backlightTimer, 0);
+  //     // timerStart(backlightTimer);
+  //   } else {
+  //     close_dist = false;
+  //   }
 
-//     // Serial.println("]");
+  //   // Serial.println("]");
 
-//     vTaskDelay(pdMS_TO_TICKS(200));
-//   }
-// }
+  //   vTaskDelay(pdMS_TO_TICKS(200));
+  // }
+}
 
+/**
+ * @brief Periodically triggers ultrasonic distance measurements and reads PIR sensor state.
+ *
+ * @details 
+ * - Triggered every 20ms (50Hz).
+ * - Sends sensor readings (`sensorData_t`) to `sensorQueue`.
+ * - Uses task notifications for echo pulse timing instead of `pulseIn()`.
+ *
+ * @param pvParameters Unused
+ */
 void sensorReadTask(void* pvParameters) {
   sensorData_t data;
   TickType_t xLastWakeTime;
@@ -125,8 +166,16 @@ void sensorReadTask(void* pvParameters) {
   }
 }
 
-
-
+/**
+ * @brief Processes buffered sensor readings and triggers appropriate system behavior.
+ *
+ * @details
+ * - Computes rolling average of distance and motion buffer.
+ * - Determines `close_dist` and `motion_detected` flags.
+ * - Turns on LCD backlight on detection and logs event using RTC with semaphore.
+ *
+ * @param pvParameters Unused
+ */
 void sensorProcessTask(void* pvParameters) {
   sensorData_t d;
   while (1) {
@@ -187,7 +236,16 @@ void sensorProcessTask(void* pvParameters) {
   }
 }
 
-
+/**
+ * @brief Polls the RFID reader for new tag UIDs and sends them to `rfidQueue`.
+ *
+ * @details
+ * - Checks for new cards using MFRC522 interface.
+ * - Extracts and formats UID into a string and sends to queue.
+ * - Ensures card halting and crypto session termination.
+ *
+ * @param pvParameters Unused
+ */
 void taskRFIDReader(void* pvParameters) {
   while (1) {
     if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {
@@ -209,6 +267,21 @@ void taskRFIDReader(void* pvParameters) {
   }
 }
 
+/**
+ * @brief Processes UIDs from `rfidQueue` and manages access control.
+ *
+ * @details
+ * - Compares received UID to allowed list.
+ * - If authorized:
+ *   - Unlocks system.
+ *   - Notifies `ServoRunTask`.
+ *   - Starts/reset lock and backlight timers.
+ * - If unauthorized:
+ *   - Logs timestamp and denies access.
+ * - Avoids redundant unlocks from repeated scans.
+ *
+ * @param pvParameters Unused
+ */
 void taskPrinter(void* pvParameters) {
   char receivedUID[20];
   char lastUID[20] = "";

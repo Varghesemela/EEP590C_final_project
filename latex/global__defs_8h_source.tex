@@ -1,0 +1,102 @@
+\doxysection{global\+\_\+defs.\+h}
+\hypertarget{global__defs_8h_source}{}\label{global__defs_8h_source}\mbox{\hyperlink{global__defs_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#ifndef\ GLOBALS\_H}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#define\ GLOBALS\_H}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <ESP32Servo.h>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <LiquidCrystal\_I2C.h>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <SPI.h>}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <MFRC522.h>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <RTClib.h>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ "{}driver/timer.h"{}}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ ==========\ Pin\ Definitions\ ==========}}
+\DoxyCodeLine{00031\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a734029c5fc6508cd75bf19cd7f52b66d}{LED}};}
+\DoxyCodeLine{00032\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a93a85a5200e90faaef61f936275f9e39}{SERVO\_PIN}};}
+\DoxyCodeLine{00033\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8h_a30fd76f0f4363cddea28599c01378ef3}{POT\_PIN}};}
+\DoxyCodeLine{00034\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a4adb49baac164d761359c1af0d2c2bb2}{BUTTON\_PIN}};}
+\DoxyCodeLine{00035\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a8880a210d3d7b654ed6095612f350147}{SDA\_PIN}};}
+\DoxyCodeLine{00036\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a6fa077bdb86507b0c98cd47b0e0989b4}{SCL\_PIN}};}
+\DoxyCodeLine{00037\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a22efb88130cbace44007553eec72a188}{PIR\_PIN}};}
+\DoxyCodeLine{00038\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a7a38f8fe2250c2011a6a8c7d13c66ca7}{ECHO\_PIN}};}
+\DoxyCodeLine{00039\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a4468fd3e9632684e6b1e52f47fe7ca27}{TRIG\_PIN}};}
+\DoxyCodeLine{00040\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a67257d53cf891973c2845a899eeaef7d}{SS\_PIN}};}
+\DoxyCodeLine{00041\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a3ff2e02d6209d87e1e11d2bd43275236}{RST\_PIN}};}
+\DoxyCodeLine{00042\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_ae292b4bb0383ed60bcf040f0f1c1fd61}{MOSI\_PIN}};}
+\DoxyCodeLine{00043\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a28968e484677c283dc1c5339e5e60421}{MISO\_PIN}};}
+\DoxyCodeLine{00044\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a78b536c62aeaf86c6adc9384fa185bca}{IRQ\_PIN}};}
+\DoxyCodeLine{00045\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_ade4ce3492653f530431c3aa6f3b73ed1}{SCK\_PIN}};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{comment}{//=========\ TASK\ HANDLES\ =========}}
+\DoxyCodeLine{00048\ \textcolor{keyword}{extern}\ TaskHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_a441cd3d104a596813a403100482c451f}{TaskLED\_Handle}};}
+\DoxyCodeLine{00049\ \textcolor{keyword}{extern}\ TaskHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_a401b14ba5a1ca314c371858b4c0e75d2}{TaskServoRun\_Handle}};}
+\DoxyCodeLine{00050\ \textcolor{keyword}{extern}\ TaskHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_a722fb5574a3842577bae492875908f78}{TaskUpdateButton\_Handle}};}
+\DoxyCodeLine{00051\ \textcolor{keyword}{extern}\ TaskHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_a18c2fed31b163e64f1f283aba1f510e0}{TaskMotion\_Handle}};}
+\DoxyCodeLine{00052\ \textcolor{keyword}{extern}\ TaskHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_ad590dea6bfbdef17e61133662d34de1a}{TaskSound\_Handle}};}
+\DoxyCodeLine{00053\ \textcolor{keyword}{extern}\ TaskHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_a4080e16b635b2c3a63fb21ff5a127316}{TaskLCD\_Handle}};}
+\DoxyCodeLine{00054\ \textcolor{keyword}{extern}\ TaskHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_a4cab83ec5008742449ea361a0d26f3d1}{TaskUltraSonic\_Handle}};}
+\DoxyCodeLine{00055\ \textcolor{keyword}{extern}\ TaskHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_a77dceabbd02bc08a87ace2f3b8d161a3}{taskRFIDReader\_Handle}};}
+\DoxyCodeLine{00056\ \textcolor{keyword}{extern}\ TaskHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_a75912ff73c3d0a4c832ee9dfbb9eb73f}{taskPrinter\_Handle}};}
+\DoxyCodeLine{00057\ \textcolor{keyword}{extern}\ TaskHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_a33ea043cc379ef2c0e36e0f9e9559335}{taskRTC\_Handle}};}
+\DoxyCodeLine{00058\ \textcolor{keyword}{extern}\ TaskHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_a475755d65e70d4a6a7f2223d2a0d9e3f}{taskSensorRead\_Handle}};}
+\DoxyCodeLine{00059\ \textcolor{keyword}{extern}\ TaskHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_a9206a6b571a3641bdb4fdea09739c7a6}{taskSensorProcess\_Handle}};}
+\DoxyCodeLine{00060\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{global__defs_8cpp_a0f037bc07c21848facfb8a31a32a0719}{allowedUIDs}}[];}
+\DoxyCodeLine{00061\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a914b0c79284494a5f545381d66afb8f7}{numAllowedUIDs}};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ ==========\ Constants\ ==========}}
+\DoxyCodeLine{00064\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{global__defs_8cpp_a5c8221e125b450af1faf364d9d3d0601}{SOUND\_SPEED\_CM\_PER\_US}};}
+\DoxyCodeLine{00065\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \mbox{\hyperlink{global__defs_8cpp_a7d466b68c5e24096e6bcd063f3ab8736}{debounceDelay}};}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{structsensor_data__t_ae4ba0ec4494cfc04b71a375bd3d4c179}{distanceCm}};}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{int}\ \ \ \mbox{\hyperlink{structsensor_data__t_a7a8dc31d201c59c110d894e2b4a8a063}{motionState}};\ \ \ \textcolor{comment}{//\ HIGH\ or\ LOW\ from\ PIR}}
+\DoxyCodeLine{00070\ \}\ \mbox{\hyperlink{structsensor_data__t}{sensorData\_t}};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ ==========\ Peripheral\ Objects\ ==========}}
+\DoxyCodeLine{00073\ \textcolor{keyword}{extern}\ LiquidCrystal\_I2C\ \mbox{\hyperlink{global__defs_8h_a0b3886fc5d22cd9c3db5f0da7b01a2ce}{lcd}};}
+\DoxyCodeLine{00074\ \textcolor{keyword}{extern}\ Servo\ \mbox{\hyperlink{global__defs_8cpp_ab7eaefeafe574cbf45415789bf672403}{myservo}};}
+\DoxyCodeLine{00075\ \textcolor{keyword}{extern}\ MFRC522\ \mbox{\hyperlink{global__defs_8h_a3d48b337cfb6e4913f1609f55558732a}{rfid}};\ \textcolor{comment}{//\ RFID\ instance}}
+\DoxyCodeLine{00076\ \textcolor{keyword}{extern}\ QueueHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_a815ec01183b60a4ed63828cd1ef54748}{rfidQueue}};}
+\DoxyCodeLine{00077\ \textcolor{keyword}{extern}\ QueueHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_ac6b1fae2430dc808236d5f86df609c56}{sensorQueue}};}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{keyword}{extern}\ RTC\_DS3231\ \mbox{\hyperlink{global__defs_8cpp_afa042f998806fcdedab1794cebbeaad3}{rtc}};\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ RTC\ object}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ ==========\ Semaphore\ ==========}}
+\DoxyCodeLine{00082\ \textcolor{keyword}{extern}\ SemaphoreHandle\_t\ \mbox{\hyperlink{global__defs_8cpp_a053c06a507276ec243ee301bdfb284a9}{i2c\_semaphore}};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \textcolor{comment}{//\ ==========\ State\ Flags\ ==========}}
+\DoxyCodeLine{00085\ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{global__defs_8cpp_abd70e7476ee48b5662e7ab00b6b4bc01}{motion\_detected}};}
+\DoxyCodeLine{00086\ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{global__defs_8cpp_abae73da6a21c890181aeea556b060ccb}{close\_dist}};}
+\DoxyCodeLine{00087\ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{global__defs_8cpp_acd0fef286013edfa4ecbba7a57b66dad}{isLock}};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ ==========\ Buffers\ and\ Indices\ ==========}}
+\DoxyCodeLine{00090\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a9c742658e2073d4dc1d9b492cf0de6eb}{motionBuffer}}[5];}
+\DoxyCodeLine{00091\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{global__defs_8cpp_a7243f265e5b2326dea09eda1614f0756}{distanceBuffer}}[5];}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a4b89a73e0fa3f732d2ad4bc0982f83f1}{bufferIndex}};}
+\DoxyCodeLine{00094\ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a153060430d519f35d65d750aed7718e6}{bufferIndex\_sound}};}
+\DoxyCodeLine{00095\ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_ada7390ca89a3a685aade01e709c9e970}{bufferIndex\_dist}};}
+\DoxyCodeLine{00096\ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_a3bd90c0cc06e6865ed6292b51c0e99e4}{idx\_dist}};}
+\DoxyCodeLine{00097\ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{global__defs_8cpp_ad21b88565fd6af381b783ac46e03e57c}{idx\_motion}};}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{global__defs_8cpp_a61e7f4bbe65ad3029357668b5e595488}{backlightOn}};}
+\DoxyCodeLine{00100\ \textcolor{keyword}{extern}\ esp\_timer\_handle\_t\ \mbox{\hyperlink{global__defs_8cpp_a3acdda76d4bd210064901d176466fa01}{backlightTimer}};}
+\DoxyCodeLine{00101\ \textcolor{keyword}{extern}\ esp\_timer\_handle\_t\ \mbox{\hyperlink{global__defs_8cpp_aeb7f8fa8c8cd97a8128ca91b8841e5ea}{lockTimer}};}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \textcolor{comment}{//\ ==========\ Button\ State\ ==========}}
+\DoxyCodeLine{00104\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{global__defs_8cpp_a31c00481d2a709bb2873743c3b1a5cb5}{lastButtonReading}};}
+\DoxyCodeLine{00105\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{global__defs_8cpp_a5554694551ee136cf28fefadeccb86f7}{buttonState}};}
+\DoxyCodeLine{00106\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \mbox{\hyperlink{global__defs_8cpp_a025a85b33749fd5dde5cb7edd7aea941}{lastDebounceTime}};}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{comment}{//\ ==========\ Distance\ State\ ==========}}
+\DoxyCodeLine{00109\ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ uint64\_t\ \mbox{\hyperlink{global__defs_8cpp_aa6dfcece01eb915318b3814c9de4ab06}{echo\_start\_us}};}
+\DoxyCodeLine{00110\ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ uint64\_t\ \mbox{\hyperlink{global__defs_8cpp_a4bc4af77eef66fe889ba51f013f5626b}{echo\_end\_us}};}
+\DoxyCodeLine{00111\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ IRAM\_ATTR\ \mbox{\hyperlink{global__defs_8h_a8729208fe4d95f17250b25780e5654dc}{echoISR}}();}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

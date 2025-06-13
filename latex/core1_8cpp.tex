@@ -1,0 +1,163 @@
+\doxysection{core1.\+cpp File Reference}
+\hypertarget{core1_8cpp}{}\label{core1_8cpp}\index{core1.cpp@{core1.cpp}}
+
+
+Free\+RTOS task implementations for Core 1 of the Smart Security Door System.  
+
+
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include "{}core1.\+h"{}}\newline
+{\ttfamily \#include "{}global\+\_\+defs.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{core1_8cpp_ace8b2fe642b7289d51edb712ab27f86b}{distance\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em (Deprecated) Reads ultrasonic distance values in a blocking loop. Stores results into a circular buffer and manages backlight logic. Replaced by non-\/blocking sensor\+Read\+Task and sensor\+Process\+Task. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{core1_8cpp_a4b1d5f012b4fd1a45c510273744366b2}{sensor\+Read\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Periodically triggers ultrasonic distance measurements and reads PIR sensor state. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{core1_8cpp_af5b72a5414c05fac7cf74dccbd18bbba}{sensor\+Process\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Processes buffered sensor readings and triggers appropriate system behavior. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{core1_8cpp_ab1d5ad6645129d841c165d1edc658281}{task\+RFIDReader}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Polls the RFID reader for new tag UIDs and sends them to {\ttfamily rfid\+Queue}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{core1_8cpp_a5d7e38a6046bcf1dbe233394dd009064}{task\+Printer}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Processes UIDs from {\ttfamily rfid\+Queue} and manages access control. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Free\+RTOS task implementations for Core 1 of the Smart Security Door System. 
+
+This file defines and implements all Core 1 tasks that handle sensor reading, proximity/motion detection, RFID tag reading, and access control logic. It operates as part of a dual-\/core system on the ESP32 microcontroller.
+
+Core responsibilities\+:
+\begin{DoxyItemize}
+\item {\bfseries{sensor\+Read\+Task}}\+: Collects ultrasonic and PIR sensor data at 50Hz and sends it via queue.
+\item {\bfseries{sensor\+Process\+Task}}\+: Aggregates sensor readings into buffers, determines detection events, and handles the backlight.
+\item {\bfseries{task\+RFIDReader}}\+: Reads RFID tag UIDs and passes them into a queue for validation.
+\item {\bfseries{task\+Printer}}\+: Validates UID access, logs attempts, controls lock state, and manages LCD backlight timers.
+\item {\bfseries{distance\+Task}}\+: (Debug) Continuously samples Ultrasonic sensor data and triggers UI updates and timers.
+\end{DoxyItemize}\hypertarget{core1_8cpp_Features}{}\doxysubsection{\texorpdfstring{Features}{Features}}\label{core1_8cpp_Features}
+
+\begin{DoxyItemize}
+\item Real-\/time sensor polling with timing guarantees using {\ttfamily v\+Task\+Delay\+Until}.
+\item Queue-\/based communication between reader and processor tasks.
+\item Uses ESP32\textquotesingle{}s {\ttfamily esp\+\_\+timer} library for one-\/shot timers to control lock duration and backlight timeout.
+\item Incorporates I²C semaphore protection for safe RTC access.
+\end{DoxyItemize}\hypertarget{core1_8h_Authors}{}\doxysubsection{\texorpdfstring{Authors}{Authors}}\label{core1_8h_Authors}
+Created by Sanjay Varghese, 2025 ~\newline
+ Additionally modified by Sai Jayanth Kalisi, 2025 ~\newline
+ Additionally modified by Ankit Telluri, 2025 
+
+\label{doc-func-members}
+\Hypertarget{core1_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{core1_8cpp_ace8b2fe642b7289d51edb712ab27f86b}\index{core1.cpp@{core1.cpp}!distanceTask@{distanceTask}}
+\index{distanceTask@{distanceTask}!core1.cpp@{core1.cpp}}
+\doxysubsubsection{\texorpdfstring{distanceTask()}{distanceTask()}}
+{\footnotesize\ttfamily \label{core1_8cpp_ace8b2fe642b7289d51edb712ab27f86b} 
+void distance\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+(Deprecated) Reads ultrasonic distance values in a blocking loop. Stores results into a circular buffer and manages backlight logic. Replaced by non-\/blocking sensor\+Read\+Task and sensor\+Process\+Task. 
+
+Deprecated. \Hypertarget{core1_8cpp_af5b72a5414c05fac7cf74dccbd18bbba}\index{core1.cpp@{core1.cpp}!sensorProcessTask@{sensorProcessTask}}
+\index{sensorProcessTask@{sensorProcessTask}!core1.cpp@{core1.cpp}}
+\doxysubsubsection{\texorpdfstring{sensorProcessTask()}{sensorProcessTask()}}
+{\footnotesize\ttfamily \label{core1_8cpp_af5b72a5414c05fac7cf74dccbd18bbba} 
+void sensor\+Process\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Processes buffered sensor readings and triggers appropriate system behavior. 
+
+
+\begin{DoxyItemize}
+\item Computes rolling average of distance and motion buffer.
+\item Determines {\ttfamily close\+\_\+dist} and {\ttfamily motion\+\_\+detected} flags.
+\item Turns on LCD backlight on detection and logs event using RTC with semaphore.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & Unused \\
+\hline
+\end{DoxyParams}
+\Hypertarget{core1_8cpp_a4b1d5f012b4fd1a45c510273744366b2}\index{core1.cpp@{core1.cpp}!sensorReadTask@{sensorReadTask}}
+\index{sensorReadTask@{sensorReadTask}!core1.cpp@{core1.cpp}}
+\doxysubsubsection{\texorpdfstring{sensorReadTask()}{sensorReadTask()}}
+{\footnotesize\ttfamily \label{core1_8cpp_a4b1d5f012b4fd1a45c510273744366b2} 
+void sensor\+Read\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Periodically triggers ultrasonic distance measurements and reads PIR sensor state. 
+
+
+\begin{DoxyItemize}
+\item Triggered every 20ms (50Hz).
+\item Sends sensor readings ({\ttfamily \doxylink{structsensor_data__t}{sensor\+Data\+\_\+t}}) to {\ttfamily sensor\+Queue}.
+\item Uses task notifications for echo pulse timing instead of {\ttfamily pulse\+In()}.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & Unused \\
+\hline
+\end{DoxyParams}
+\Hypertarget{core1_8cpp_a5d7e38a6046bcf1dbe233394dd009064}\index{core1.cpp@{core1.cpp}!taskPrinter@{taskPrinter}}
+\index{taskPrinter@{taskPrinter}!core1.cpp@{core1.cpp}}
+\doxysubsubsection{\texorpdfstring{taskPrinter()}{taskPrinter()}}
+{\footnotesize\ttfamily \label{core1_8cpp_a5d7e38a6046bcf1dbe233394dd009064} 
+void task\+Printer (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Processes UIDs from {\ttfamily rfid\+Queue} and manages access control. 
+
+
+\begin{DoxyItemize}
+\item Compares received UID to allowed list.
+\item If authorized\+:
+\begin{DoxyItemize}
+\item Unlocks system.
+\item Notifies {\ttfamily Servo\+Run\+Task}.
+\item Starts/reset lock and backlight timers.
+\end{DoxyItemize}
+\item If unauthorized\+:
+\begin{DoxyItemize}
+\item Logs timestamp and denies access.
+\end{DoxyItemize}
+\item Avoids redundant unlocks from repeated scans.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & Unused \\
+\hline
+\end{DoxyParams}
+\Hypertarget{core1_8cpp_ab1d5ad6645129d841c165d1edc658281}\index{core1.cpp@{core1.cpp}!taskRFIDReader@{taskRFIDReader}}
+\index{taskRFIDReader@{taskRFIDReader}!core1.cpp@{core1.cpp}}
+\doxysubsubsection{\texorpdfstring{taskRFIDReader()}{taskRFIDReader()}}
+{\footnotesize\ttfamily \label{core1_8cpp_ab1d5ad6645129d841c165d1edc658281} 
+void task\+RFIDReader (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Polls the RFID reader for new tag UIDs and sends them to {\ttfamily rfid\+Queue}. 
+
+
+\begin{DoxyItemize}
+\item Checks for new cards using MFRC522 interface.
+\item Extracts and formats UID into a string and sends to queue.
+\item Ensures card halting and crypto session termination.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & Unused \\
+\hline
+\end{DoxyParams}

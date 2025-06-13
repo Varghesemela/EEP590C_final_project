@@ -1,3 +1,21 @@
+/**
+ * @file global_defs.h
+ * @brief Global declarations for Smart Security Door system.
+ *
+ * @details
+ * This header provides external declarations for all globally used hardware pin definitions, 
+ * task handles, semaphores, peripheral objects, sensor state variables, buffers, and RTOS resources.
+ * It is shared across all components of the system such as RFID access control, distance sensing, 
+ * LCD display, and real-time clock functionalities.
+ *
+ * It complements `global_defs.cpp` where these variables are defined and initialized.
+ *
+ * @authors Authors
+ * Created by Sanjay Varghese, 2025  
+ * Additionally modified by Sai Jayanth Kalisi, 2025  
+ * Additionally modified by Ankit Telluri, 2025
+ */
+
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
